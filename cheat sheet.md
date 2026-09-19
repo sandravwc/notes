@@ -1,0 +1,27 @@
+---
+title: cheat sheet
+---
+
+- [[cheat sheet/elk]]
+- [[cheat sheet/enterprise linux]]
+- [[cheat sheet/cassandra]]
+- [[cheat sheet/jq]]
+- [[cheat sheet/unsorted]]
+- [[cheat sheet/nmcli]]
+- [[cheat sheet/awk]]
+- [[cheat sheet/lvm]]
+- [[cheat sheet/drbd]]
+- [[cheat sheet/ci-cd]]
+- [[cheat sheet/vim]]
+- [[cheat sheet/bash]]
+- [[cheat sheet/screen]]
+- [[cheat sheet/proceed]]
+- [[cheat sheet/mail]]
+- [[cheat sheet/pfsense]]
+- [[cheat sheet/leapp]]
+- [[cheat sheet/mysql-major-upgrade]]
+- [[cheat sheet/nfs4-acl]]
+- [[cheat sheet/clickhouse]]
+- [[cheat sheet/freeipa]]
+- [[cheat sheet/mysql-failover]]
+- 
