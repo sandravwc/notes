@@ -135,3 +135,13 @@ title: android/mealprep-server
     photo hint from model + rule (<3 kept or >half dropped) shown with warning in push and ui
     stickers get read as products ("Bon Jovi", "Placebo"), foil bundles are invisible
     ```
+
+- dyndns over autodns api, no provider
+
+```sh
+# server/dyndns.py, cron */5. upnp GetExternalIPAddress from the router first, ifconfig.co / icanhazip fallback
+# A record rewrite = same bulk task 0202001 acme.sh uses: rr_rem old A + rr_add new A ttl 300
+# creds parsed from ~/.acme.sh/account.conf (SAVED_AUTODNS_*), state in data/dyndns.ip
+python3 ~/mealprep/repo/server/dyndns.py --force   # rewrite now
+# upnp off on the router -> ip_upnp() returns '' silently, echo services take over
+```
