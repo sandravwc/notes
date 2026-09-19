@@ -14,3 +14,5 @@ title: android
 - [[android/termux-hyperos-kills]]
 - [[android/adb-vendor-libs]]
 - [[android/tailscale-termux-build]]
+- [[android/haproxy-termux]]
+- [[android/anubis-termux]]

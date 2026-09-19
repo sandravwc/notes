@@ -146,4 +146,4 @@ python3 ~/mealprep/repo/server/dyndns.py --force   # rewrite now
 # upnp off on the router -> ip_upnp() returns '' silently, echo services take over
 ```
 
-- split out: [[android/termux-hyperos-kills]], [[android/adb-vendor-libs]], [[android/tailscale-termux-build]], [[cheat sheet/acme-autodns]]
+- split out: [[android/termux-hyperos-kills]], [[android/adb-vendor-libs]], [[android/tailscale-termux-build]], [[android/haproxy-termux]], [[android/anubis-termux]], [[cheat sheet/acme-autodns]]
