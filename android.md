@@ -11,3 +11,6 @@ title: android
 - [[android/proot-debian]]
 - [[android/termux-file-transfer]]
 - [[android/termux-setup]]
+- [[android/termux-hyperos-kills]]
+- [[android/adb-vendor-libs]]
+- [[android/tailscale-termux-build]]

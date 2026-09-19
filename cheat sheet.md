@@ -25,3 +25,4 @@ title: cheat sheet
 - [[cheat sheet/freeipa]]
 - [[cheat sheet/mysql-failover]]
 - [[cheat sheet/ssh-mesh]]
+- [[cheat sheet/acme-autodns]]
