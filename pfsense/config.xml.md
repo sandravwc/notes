@@ -24,7 +24,7 @@ title: pfsense/config.xml
       .remoteid.address,
       .remoteid.netbits
     ] | @tsv
-  ' config-cust02-lb1.example.internal-20250908144238.json     | column -s $'\t' -t
+  ' config-cust02-lb1.example.internal-20250908144238.json | column -s $'\t' -t
   
   jq '.pfsense.ipsec.phase1[] | select(.ikeid == "12")' config-cust02-lb1.example.internal-20250908144238.json > tunnel-12.new.json
   jq '.pfsense.ipsec.phase2[] | select(.ikeid == "12")' config-cust02-lb1.example.internal-20250908144238.json >> tunnel-12.new.json
