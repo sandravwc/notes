@@ -19,6 +19,3 @@ title: android/dotnet-arm64-proot
     # unversioned build (1.0.0.0) can break upstream version-compat checks -- inject real version like the project's own CI does:
     dotnet publish ... -p:Version=5.3.3 -p:InformationalVersion="5.3.3+<commit-sha>"   # quote it, msbuild splits InformationalVersion on unquoted commas
     ```
-
-- diagnosing a network-timeout that's actually a ban
-  - before blaming build/proot/network stack: raw credential-free ping to the api first -- some APIs reply to bare pings with an explicit ban notice while silently dropping auth requests (looks like a plain timeout). don't keep retrying once suspected, extends the ban.
