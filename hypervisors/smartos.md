@@ -3,10 +3,13 @@ title: hypervisors/smartos
 ---
 
 - update nic for carp/vrrp
+
   ```sh
   echo '{"update_nics":[{"mac": "c2:fd:b1:a8:a1:43", "allow_ip_spoofing": true, "allow_mac_spoofing": true, "allow_restricted_traffic": true, "allow_unfiltered_promisc": true...}]}' | vmadm update uuid
   ```
+
 - checking resources
+
   ```sh
   # basic health checks
           - RAM: echo ::memstat |mdb -k 

@@ -5,6 +5,7 @@ title: cheat sheet/enterprise linux/comfy script
 - atuin `sync_address` has to match atuin server url
 - follow [[cheat sheet/enterprise linux/install atuin server]] to install atuin server to sync histories between servers
 - enterprise linux (8|9) and higher generic
+
   ```sh
   #!/usr/bin/env bash
   hostname=$(hostname)
@@ -167,7 +168,9 @@ title: cheat sheet/enterprise linux/comfy script
   rm -f /root/anaconda-ks.cfg /root/changelog.txt /root/original-ks.cfg /root/postinstall.sh 
   rm -rf /root/workdir/ble.sh
   ```
+
 - enterprise linux 8 and higher zfs
+
   ```sh
   #!/usr/bin/env bash
   dnf install --assumeyes --enablerepo=powertools \
@@ -367,7 +370,9 @@ title: cheat sheet/enterprise linux/comfy script
   rm -f /root/anaconda-ks.cfg /root/changelog.txt /root/original-ks.cfg /root/postinstall.sh 
   rm -rf /root/workdir/ble.sh
   ```
+
 - enterprise linux (8|9) kubernetes
+
   ```bash
   #!/usr/bin/env bash
   hostname=$(hostname)
@@ -539,7 +544,9 @@ title: cheat sheet/enterprise linux/comfy script
   rm -f /root/anaconda-ks.cfg /root/changelog.txt /root/original-ks.cfg /root/postinstall.sh
   rm -rf /root/workdir/ble.sh
   ```
+
 - enterprise linux 7 generic
+
   ```sh
   #!/usr/bin/env bash
   

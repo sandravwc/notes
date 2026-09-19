@@ -3,6 +3,7 @@ title: pacemaker/motd
 ---
 
 - marek-motd
+
   ```sh
    _____________
   < F O O B A R >
@@ -40,7 +41,9 @@ title: pacemaker/motd
   md defect:                              `drbdadm create-md $resource` && `drbdadm secondary $resource` && `drdbadm connect $resource`    ## ON DEFECT NODE
   corrupted file system on 1 node:        `mkfs.ext4 /dev/dbrd0` && `drdbadm (--discard-my-data) connect $resource`                        ## ON DEFECT NODE
   ```
+
 - kilian-motd
+
   ```sh
   ######## Pacemaker Befehle
   

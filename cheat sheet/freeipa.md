@@ -3,6 +3,7 @@ title: cheat sheet/freeipa
 ---
 
 - kerberos + hostgroups + dns via ipa
+
   - ```sh
     echo "<redacted>" | kinit admin
     ipa hostgroup-find --all --raw | grep "cn: "

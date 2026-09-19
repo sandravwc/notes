@@ -3,6 +3,7 @@ title: cheat sheet/elk
 ---
 
 - moving indices between nodes
+
   ```sh
   # location of index non primary shards
   curl -s -u admin:<redacted> 192.168.1.10:9200/_cluster/allocation/explain?pretty -H 'Content-Type: application/json' -d'
@@ -40,7 +41,9 @@ title: cheat sheet/elk
   zone_data_stats 0     24.4m peer           index 192.168.1.11     elk06           192.168.1.12    elk04           n/a        n/a      116   115             99.1%         116         10341330408 8268205727      80.0%         10341330408 0            0                      100.0%
   zone_data_stats 0     488ms existing_store done  n/a             n/a             192.168.1.11     elk06           n/a        n/a      0     0               100.0%        116         0           0               100.0%        10341330408 0            0                      100.0%
   ```
+
 - mehr max shards
+
   ```sh
   curl -XPUT 'http://192.168.1.20:9200/_cluster/settings' -H 'Content-Type: application/json' -d'
   {
@@ -57,7 +60,9 @@ title: cheat sheet/elk
     }
   }'
   ```
+
 - index status
+
   ```sh
   curl -XGET http://192.168.1.20:9200/_cluster/allocation/explain -H 'Content-Type: application/json' -d'
   {

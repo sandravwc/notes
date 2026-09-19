@@ -3,6 +3,7 @@ title: pfsense/RESTApi/Certificate Revocation
 ---
 
 - get vpn certificates meta data to revoke
+
   ```sh
   curl --silent \
     --insecure \
@@ -18,7 +19,9 @@ title: pfsense/RESTApi/Certificate Revocation
     "certref": "65ba5a8784811"
   }
   ```
+
 - get appropriate crl
+
   ```sh
   curl --silent \
     --insecure \
@@ -30,7 +33,9 @@ title: pfsense/RESTApi/Certificate Revocation
     "crl name": "OpenVPN-Revocation"
   }
   ```
+
 - add certificate to crl
+
   ```sh
   curl --silent \
     --insecure \
@@ -48,7 +53,9 @@ title: pfsense/RESTApi/Certificate Revocation
   
   {"code":200,"status":"ok","response_id":"SUCCESS","message":"","data":{"parent_id":"0","id":2,"certref":"65ba5a8784811","serial":null,"reason":-1,"revoke_time":1746180758}}
   ```
+
 - double check if certs are in list
+
   ```sh
   curl --silent \
     --insecure \

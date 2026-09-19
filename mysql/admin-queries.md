@@ -3,6 +3,7 @@ title: mysql/admin-queries
 ---
 
 - show db data usage as seen by sql
+
   ```sql
   mysql> select table_schema, count(*), sum(table_rows), sum(data_length)/pow(2, 30) data_gb from information_schema.TABLES where table_schema like 'foo%' group by 1;
   +--------------+----------+-----------------+-------------------+
@@ -13,7 +14,9 @@ title: mysql/admin-queries
   +--------------+----------+-----------------+-------------------+
   2 rows in set (0,54 sec)
   ```
+
 - optimize tables based on select condition
+
   ```sql
   use mysql;
   delimiter $$

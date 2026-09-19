@@ -3,7 +3,8 @@ title: mongodb
 ---
 
 - arbiter...
-  ```
+
+  ```js
   cfg.members.forEach((member) => {
     if (member._id === 3) {
       member.arbiterOnly = true;

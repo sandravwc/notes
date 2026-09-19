@@ -3,8 +3,9 @@ title: cheat sheet/enterprise linux/install atuin server
 ---
 
 - follow this after installing atuin
-  - https://docs.atuin.sh/self-hosting/server-setup
+  - <https://docs.atuin.sh/self-hosting/server-setup>
 - copy pasta
+
   - ```sh
     #!/usr/bin/env bash
     dnf install sqlite -y

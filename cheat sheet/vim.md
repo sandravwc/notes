@@ -3,10 +3,13 @@ title: cheat sheet/vim
 ---
 
 - paste current file name
+
   ```txt
   "%p
   ```
+
 - add to end of line
+
   ```txt
   enter visual block mode.
   select lines

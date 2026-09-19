@@ -3,6 +3,7 @@ title: cheat sheet/leapp
 ---
 
 - the thing itself
+
   ```sh
   dnf update -y && reboot
   dnf install -y http://repo.almalinux.org/elevate/elevate-release-latest-el$(rpm --eval %rhel).noarch.rpm
@@ -11,7 +12,9 @@ title: cheat sheet/leapp
   leapp upgrade
   reboot
   ```
+
 - get rid of junk pre upgrade
+
   ```sh
   #!/usr/bin/env bash
   
@@ -24,7 +27,9 @@ title: cheat sheet/leapp
   leapp answer --section check_vdo.confirm=True
   leapp preupgrade
   ```
+
 - add new junk post upgrade
+
   ```sh
   #!/usr/bin/env bash
   monIp="192.168.10.9"
@@ -57,7 +62,9 @@ title: cheat sheet/leapp
   #nmcli c u lo
   update-crypto-policies --set DEFAULT:SHA1
   ```
+
 - remove boomer netconf
+
   ```sh
   cat /etc/default/grub
     - Remove those flags: Ensure neither `net.ifnames=0` nor `biosdevname=0` is present.
@@ -88,7 +95,9 @@ title: cheat sheet/leapp
   44211  2026-02-23 22:52:51 reboot
   44212  2026-02-23 22:53:21 ip a
   ```
+
 - custom internal repo (example layout for a company-internal package mirror)
+
   ```sh
   [company_extern_projects]
   name=Company Projects Packages (AlmaLinux_9)

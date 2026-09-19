@@ -10,18 +10,23 @@ title: kafka/auth/sasl_plaintext
   - akhq
 - ### Before adjusting the configs, the configurations of the services must be adjusted:
   - systemctl edit zookeeper.service
+
     ```service
     [Service]
     Environment=SERVER_JVMFLAGS=\"-Djava.security.auth.login.config=/etc/zookeeper/jaas.conf\"
     ```
+
   - systemctl edit kafka.service
+
     ```service
     [Service]
     Environment=\"KAFKA_OPTS=-Djava.security.auth.login.config=/etc/kafka/jaas.conf\"
     ```
+
   - For Zookeeper and Kafka, the jaas.conf files must be in the right place for the services to start.
 - ### The following configuration files must be changed:
   - /opt/kafka/config/server.properties
+
     ```properties
     # for any
     super.users=User:admin
@@ -40,12 +45,15 @@ title: kafka/auth/sasl_plaintext
     advertised.listeners=PLAINTEXT://:9093,SASL_PLAINTEXT://:9092
     listener.security.protocol.map=SASL_PLAINTEXT:SASL_PLAINTEXT,PLAINTEXT:PLAINTEXT
     ```
+
   - /opt/kafka/config/jaas.conf
+
     ```sh
     ln -s /opt/kafka/config/jaas.conf /etc/kafka/jaas.conf
     ```
+
   - /opt/kafka/config/connect-distributed.properties
-    
+
     ```properties
     
     # add proper listener. listener comes from server.properties
@@ -69,8 +77,9 @@ title: kafka/auth/sasl_plaintext
         username="connect-consumer" \
         password="<redacted>";
     ```
+
   - /etc/schema-registry/schema-registry.properties
-    
+
     ```properties
     listeners=http://0.0.0.0:8085
     kafkastore.bootstrap.servers=SASL_PLAINTEXT://192.168.11.10:9092,\
@@ -85,11 +94,15 @@ title: kafka/auth/sasl_plaintext
         username="schema" \
         password="<redacted>";
     ```
+
   - /opt/zookeeper/conf/jaas.conf
+
     ```sh
     ln -s /opt/zookeeper/conf/jaas.conf /etc/zookeeper/jaas.conf
     ```
+
   - here jaas config is populated with admin pw from /opt/kafka/config/jaas.conf
+
     ```conf
     QuorumServer {
         org.apache.zookeeper.server.auth.DigestLoginModule required
@@ -105,15 +118,18 @@ title: kafka/auth/sasl_plaintext
         user_admin="<redacted>";
     };
     ```
+
   - /opt/zookeeper/conf/zoo.cfg
+
     ```cfg
     authProvider.sasl=org.apache.zookeeper.server.auth.SASLAuthenticationProvider
     quorum.auth.enableSasl=true
     quorum.auth.learnerRequireSasl=true
     quorum.auth.serverRequireSasl=true
     ```
+
   - /etc/akhq/akhq.yml
-    
+
     ```yml
     connections:
       foo-bar-kafka:
@@ -123,15 +139,19 @@ title: kafka/auth/sasl_plaintext
           sasl.mechanism: PLAIN
           sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="admin" password="changeme";
     ```
+
 - ### order of operation
   - configuruing kafka services
   - changing the configs
     - starting kafka server and zookeeper
+
       - ```sh
         systemctl start kafka
         systemctl start zookeeper
         ```
+
     - once kafka and zookeeper run on all nodes, check if zookeeper works correctly
+
       - ```sh
         echo stat | nc localhost 2181
         Zookeeper version: 3.7.2-c06c7c8a3e95779d4becb1938b378596e3b420d0, built on 2023-10-06 09:51 UTC
@@ -148,9 +168,11 @@ title: kafka/auth/sasl_plaintext
         Mode: follower
         Node count: 322
         ```
+
     - Add ACLs to Zookeeper
       - The rules usually come from the customer/developer. They can be imported with the following script. Importing the same rules several times is no problem.
       - you NEED to import ACLs in order for kafka-connect and schema-registry to start correctly when configured with users from `/opt/kafka/config/jaas.conf`
+
         ```sh
         #!/usr/bin/env bash
         zookeeperhost="localhost"
@@ -163,7 +185,9 @@ title: kafka/auth/sasl_plaintext
         .
         .
         ```
+
   - restarting services
+
     ```sh
     #!/usr/bin/env bash
     systemctl "${1}" zookeeper.service\
@@ -173,12 +197,15 @@ title: kafka/auth/sasl_plaintext
         kafka-ui.service\
         kafka.service
     ```
+
   - customer/dev tests whether everything works as it should
     - don't hesitate to test things yourself e.g. using nagios
+
       ```sh
       /usr/bin/docker run --rm -v /usr/lib/nagios/plugins/check_kafka.py:/github/nagios-plugins/check_kafka.py --net=host harisekhon/nagios-plugins check_kafka.py --host localhost --topic nagios --sasl-username admin --sasl-password <redacted>
       /usr/bin/docker run --rm --net=host harisekhon/nagios-plugins check_zookeeper.pl  --host localhost
       /usr/lib/nagios/plugins/check_http -H localhost -p 8085
       /usr/lib/nagios/plugins/check_http -H localhost -p 8083
       ```
+
   - fin

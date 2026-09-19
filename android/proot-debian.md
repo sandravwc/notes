@@ -3,12 +3,15 @@ title: android/proot-debian
 ---
 
 - debian userland in termux via proot-distro
+
   - ```sh
     pkg install proot-distro
     proot-distro install debian
     proot-distro login debian    # real glibc, locale-gen works normally
     ```
+
 - gotchas
+
   - ```sh
     # proot-distro login = login shell (bash -l) -> reads .bash_profile not .bashrc; source .bashrc from .bash_profile
     # `--user` + backgrounding = process dies when the login command exits (proot --kill-on-exit) -- su - <user> -c '<cmd>' after logging in as root instead

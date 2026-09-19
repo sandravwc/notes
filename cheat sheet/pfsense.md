@@ -3,6 +3,7 @@ title: cheat sheet/pfsense
 ---
 
 - fix pfSense-upgrade
+
   ```sh
   certctl rehash
   pkg-static clean -ay

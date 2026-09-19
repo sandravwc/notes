@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "foam": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "foam-cli",
+        "mcp",
+        "--workspace",
+        "/home/mrk/workdir/notes"
+      ],
+      "env": {}
+    }
+  }
+}

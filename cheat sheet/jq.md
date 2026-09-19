@@ -3,10 +3,13 @@ title: cheat sheet/jq
 ---
 
 - get json keys
+
   ```sh
   jq '[paths(scalars)|map(if type == "number" then "[]" else tostring end)|join(".")]|unique|map(.|= gsub("\\.\\["; "[")|.|= "." + .)'
   ```
-- select based on test 
+
+- select based on test
+
   ```sh
   jq '.items[] | select(.metadata.name|test("ingress")) .spec.containers[].image'
   

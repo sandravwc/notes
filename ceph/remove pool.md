@@ -4,6 +4,7 @@ title: ceph/remove pool
 
 - assuming proxmox hv [[hypervisors/proxmox]]
 - assuming consistent hostnames and monitor names
+
   ```sh
   # on proxmox, config is synchronized using corosync, hence edit only on master node
   sed -i "s#mon_allow_pool_delete = false#mon_allow_pool_delete = true#g" /etc/ceph/ceph.conf
@@ -20,7 +21,9 @@ title: ceph/remove pool
   # delet
   ceph osd pool delete k8s_stretch_dev k8s_stretch_dev --yes-i-really-really-mean-it
   ```
+
   - revert `mon_allow_pool_delete = false` after pool deleted for enhanced labour procurement measure reasons
+
     ```sh
     sed -i "s#mon_allow_pool_delete = true#mon_allow_pool_delete = false#g" /etc/ceph/ceph.conf
     ceph config set mon mon_allow_pool_delete false

@@ -7,4 +7,4 @@ title: kubernetes
 - [[kubernetes/update cluster]]
 - [[kubernetes/change storage class]]
 - [[kubernetes/change cri]]
-- 
+-

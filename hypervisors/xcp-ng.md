@@ -3,6 +3,7 @@ title: hypervisors/xcp-ng
 ---
 
 - change disk size using xe
+
   ```sh
   [root@xcp-ng-node01 ~]# xe vm-list name-label=db.petershop.de
   uuid ( RO)           : f272f60e-a9ac-b97d-a7af-f7936167cf28
@@ -28,11 +29,15 @@ title: hypervisors/xcp-ng
   
   xe vm-start uuid=f272f60e-a9ac-b97d-a7af-f7936167cf28
   ```
+
 - create storage repositry
+
   ```sh
   [15:44 xcp-ng03 ~]# xe sr-create content-type=user device-config:device=/dev/disk/by-id/scsi-36c81f660ca0e3200298680060b87e542 host-uuid=051175b4-f335-441a-a118-ad12caae79c1 name-label="SSD" shared=false type=ext
   ```
+
 - expand storage repositry file system without downtime
+
   ```sh
   #manchmal wollen leute halt keine downtimes haben; mit manchen raid controllern kann man dinge machen wie zum beispiel online raid expansion.
   #progress einsehbar mit megacli dann

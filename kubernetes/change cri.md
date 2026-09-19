@@ -3,6 +3,7 @@ title: kubernetes/change cri
 ---
 
 - from cri-o to containerd.io
+
   ```sh
   dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
   kubectl cordon k8s-master01.example.internal

@@ -5,9 +5,9 @@ title: kubernetes/update cluster
 - ### this documentation is intended to simplify the shift to auto update kubernetes clusters
 - you need to update from version to version since kubernetes doesnt support skipping major versions
 - there is a separate page with important information from Kubernetes for each major version
-  - https://v1-31.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade
+  - <https://v1-31.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade>
 - read release notes on github (if you have nothing else better to do)
-  - https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.32.md
+  - <https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.32.md>
 - procedure:
   - create backup of nodes (LOL)
   - study release notes (LOL)
@@ -26,6 +26,7 @@ title: kubernetes/update cluster
     - reboot
   - repeat for every node
 - install pluto
+
   ```bash
   plutoLatestLinuxAmd64Release="$(curl -s https://api.github.com/repos/FairwindsOps/pluto/releases/latest | jq -r '.assets[] | select(.name | contains("linux_amd64") and endswith(".tar.gz")) | .name')"
   plutoLatestLinuxAmd64ReleaseUrl="$(curl -s https://api.github.com/repos/FairwindsOps/pluto/releases/latest | jq -r '.assets[] | select(.name | contains ("linux_amd64")and endswith(".tar.gz")) | .browser_download_url')"
@@ -33,14 +34,18 @@ title: kubernetes/update cluster
   tar -xzf "${plutoLatestLinuxAmd64Release}"
   mv pluto /root/bin/pluto
   ```
+
 - run pluto
+
   ```bash
   pluto detect-helm
   NAME                              KIND      VERSION                     REPLACEMENT            REMOVED   DEPRECATED   REPL AVAIL
   iljuchin-jenkins-test/jenkins     Ingress   networking.k8s.io/v1beta1   networking.k8s.io/v1   true      true         true
   production-jenkins-test/jenkins   Ingress   networking.k8s.io/v1beta1   networking.k8s.io/v1   true      true         true
   ```
+
 - update helm
+
   ```bash
   helmLatestVersion=$(curl -s https://api.github.com/repos/helm/helm/releases/latest | jq -r '.tag_name')
   wget --quiet https://get.helm.sh/helm-"${helmLatestVersion}"-linux-amd64.tar.gz
@@ -48,11 +53,13 @@ title: kubernetes/update cluster
   mv linux-amd64/helm /usr/local/bin/helm
   rm -rf linux-amd64/
   ```
+
 - update k8s
   - get k8s release
     - `kubernetesStableRelease=$(curl -s https://endoflife.date/api/kubernetes.json | jq -r '.[0].cycle')`
     - `kubernetesLatestRelease=$(curl -s https://endoflife.date/api/kubernetes.json | jq -r '.[0].latest')`
   - update k8s repo
+
     ```bash
     cat <<EOF | tee /etc/yum.repos.d/kubernetes.repo
     [kubernetes]
@@ -64,11 +71,15 @@ title: kubernetes/update cluster
     exclude=kubelet kubeadm kubectl cri-tools kubernetes-cni
     EOF
     ```
+
   - alternatively, just search and replace your repofiles if you're in the loop
+
   - ```bash
     sed -i 's/v1.33/v1.34/g' /etc/yum.repos.d/{kubernetes,cri-o}.repo
     ```
+
   - drain node and check if pods are running there
+
     ```bash
     kubectl drain \
     --force \
@@ -81,15 +92,19 @@ title: kubernetes/update cluster
     --all-namespaces \
     --field-selector spec.nodeName=node_name
     ```
+
   - update k8s binaries
+
     ```bash
     dnf update --assumeyes --disableexcludes=kubernetes \
     kubeadm \
     kubectl \
     kubelet
     ```
+
   - run kubeadm upgrade
     - `kubeadm upgrade plan` (optional)
+
       ```sh
       Components that must be upgraded manually after you have upgraded the control plane with 'kubeadm upgrade apply':
       COMPONENT   NODE                                       CURRENT   TARGET
@@ -121,24 +136,30 @@ title: kubernetes/update cluster
       
       You can now apply the upgrade by executing the following command:
       
-      	kubeadm upgrade apply v1.30.11
+       kubeadm upgrade apply v1.30.11
       
       Note: Before you can perform this upgrade, you have to update kubeadm to v1.30.11.
       ```
+
     - on first control plane only
+
       ```sh
       kubeadm upgrade apply v"${kubernetesLatestRelease}"
       systemctl daemon-reload
       systemctl restart kubelet
       ```
+
     - everywhere else
+
       ```sh
       kubeadm upgrade node
       systemctl daemon-reload
       systemctl restart kubelet
       ```
+
 - dnf upgrade (update os and crio)
   - update crio repo
+
     ```bash
     cat <<EOF | tee /etc/yum.repos.d/cri-o.repo
     [cri-o]
@@ -149,13 +170,17 @@ title: kubernetes/update cluster
     gpgkey=https://download.opensuse.org/repositories/isv:/cri-o:/stable:/v${kubernetesStableRelease}/rpm/repodata/repomd.xml.key
     EOF
     ```
+
   - run dnf upgrade
+
     ```bash
     dnf upgrade --assumeyes
     reboot
     ```
+
   - Backup Script
     full_backup_k8s.sh
+
        ```sh
        #!/usr/bin/bash
        
@@ -284,8 +309,10 @@ title: kubernetes/update cluster
        echo "etcd snapshot: ${LOCAL_PATH}"
        echo "Configuration files: ${CONFIG_DIR}"
     ```
+
   - Upgrade Script
     upgrade_k8s.sh
+
     ```sh
        #!/usr/bin/env bash
        

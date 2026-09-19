@@ -5,6 +5,7 @@ title: kubernetes/change storage class
 - assuming changing from longhorn to ceph
 - assuming removal of longhorn
 - assuming changing storage class name of a stateful set
+
   ```sh
   kubectl -nlonghorn-system edit settings.longhorn.io deleting-confirmation-flag
   helm uninstall -nlonghorn-system longhorn

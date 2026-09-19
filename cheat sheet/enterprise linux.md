@@ -5,19 +5,26 @@ title: cheat sheet/enterprise linux
 - [[cheat sheet/enterprise linux/comfy script]]
 - [[cheat sheet/enterprise linux/install atuin server]]
 - add vault repo
+
   ```sh
   sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS* && sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.epel.cloud|g' /etc/yum.repos.d/CentOS*
   ```
+
 - fzf and bat on centos7
+
   ```sh
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
   wget -O bat.zip https://github.com/sharkdp/bat/releases/download/v0.7.1/bat-v0.7.1-x86_64-unknown-linux-musl.tar.gz && tar xzf bat.zip -C /usr/local/ && mv /usr/local/bat-v0.7.1-x86_64-unknown-linux-musl/bat /usr/local/bin/
   ```
+
 - comfy
+
   ```sh
   dnf install fzf bat neovim bash-completion fastfetch glibc-langpack-en -y
   ```
+
 - .bash_profile
+
   ```sh
   # exports paths and other variables first
   export PATH=$PATH:$HOME/bin
@@ -32,16 +39,22 @@ title: cheat sheet/enterprise linux
     source ~/.bashrc
   fi
   ```
+
 - bashrc
+
   ```sh
   tbd
   ```
+
 - centos7 bash-completion
+
   ```sh
   [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
       . /usr/share/bash-completion/bash_completion
   ```
+
 - .config/nvim/init.vim
+
   ```vim
   set number
   set expandtab ts=2 sw=2 ai
@@ -49,11 +62,15 @@ title: cheat sheet/enterprise linux
   set list
   set mouse=
   ```
+
 - new ssh host keys
+
   ```sh
   rm -f /etc/ssh/ssh_host_* && ssh-keygen -A
   ```
+
 - bash line editor
+
   ```sh
   git clone https://github.com/akinomyoga/ble.sh.git
   cd ble.sh && make install INSDIR=/usr/local/lib/blesh
@@ -73,23 +90,31 @@ title: cheat sheet/enterprise linux
   ble-import -d integration/fzf-completion
   ble-import -d integration/fzf-key-bindings
   ```
+
 - /etc/profile.d/motd.sh
+
   ```sh
   #!/usr/bin/env bash
   fastfetch \
     --logo none \
     --structure kernel:os:Packages:uptime:memory:Shell:LocalIp:PublicIp
   ```
+
 - resize ext4 fs
+
   ```sh
   growpart /dev/sda 3
   resize2fs /dev/sda3
   ```
+
 - fix fucked locale
+
   ```sh
   dnf install glibc-langpack -en
   ```
+
 - check tls certificate
+
   ```sh
   openssl x509 -noout -text -in cert.crt
   openssl x509 -noout -dates -in cert.crt

@@ -3,10 +3,13 @@ title: pfsense/config.xml
 ---
 
 - xml in json für jq umwandeln
+
   ```sh
   yq -p=xml -o=json config-cust01-lb1.example.internal-20260219153714.xml > config-cust01-lb1.example.internal-20260219153714.json
   ```
+
 - ipsec tunnel daten für leute aufbereiten
+
   ```sh
   jq -r '
     .pfsense.ipsec as $ipsec |

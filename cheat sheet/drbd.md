@@ -3,6 +3,7 @@ title: cheat sheet/drbd
 ---
 
 - resize disk
+
   ```sh
   resize block device first
   assuming lvm with this setup:

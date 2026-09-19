@@ -4,15 +4,20 @@ title: cheat sheet/unsorted
 
 - ### here goes everything b4 being sorted
 - yolo monitoring bulk change
+
   ```sh
   awk '!/^#/ && /k8s[2-3]?-(node|master)/ {print $2}' /etc/motd | xargs -I % ssh -n % "sed -i '/zombie/ s/-w 5 -c 10/-w 40 -c 50/' /etc/nagios/nrpe_local.cfg"
   ```
+
   - fix missing k8s kubekonfig
+
     ```sh
     [21:52:20][root@k8s-master-dev01:~]$ cp /etc/kubernetes/admin.conf /root/.kube/config
     [21:53:21][root@k8s-master-dev01:~]$ kubectl get pods -A
     ```
+
   - example custom repo layout
+
     ```sh
     [custom]
     name=Custom Development repository
@@ -29,7 +34,9 @@ title: cheat sheet/unsorted
     gpgkey=https://yum.corretto.aws/corretto.key
     gpgcheck=1
     ```
+
   - unsorted unsorted :D
+
     ```sh
     vi:
     :14,52s/^/#

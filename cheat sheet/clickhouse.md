@@ -3,6 +3,7 @@ title: cheat sheet/clickhouse
 ---
 
 - query rspamd mail log by symbol/domain/sender
+
   - ```sql
     SELECT RcptDomain, Score, Action, TS, symbol, From, symbolscore, option, Subject
     FROM ( SELECT RcptDomain, Score, Action, Date, MessageId, From, Subject, TS,
