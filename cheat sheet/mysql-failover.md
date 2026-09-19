@@ -1,6 +1,5 @@
 ---
 title: cheat sheet/mysql-failover
-tags: [cheat sheet]
 ---
 
 - mysql master/slave failover behind keepalived

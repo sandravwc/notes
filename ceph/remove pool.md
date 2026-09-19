@@ -1,6 +1,5 @@
 ---
 title: ceph/remove pool
-tags: [ceph]
 ---
 
 - assuming proxmox hv [[hypervisors/proxmox]]

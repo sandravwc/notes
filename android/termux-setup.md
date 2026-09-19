@@ -1,6 +1,5 @@
 ---
 title: android/termux-setup
-tags: [android]
 ---
 
 - comfy termux base (native, no proot)

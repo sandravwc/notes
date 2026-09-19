@@ -1,6 +1,5 @@
 ---
 title: cheat sheet/pfsense
-tags: [cheat sheet]
 ---
 
 - fix pfSense-upgrade

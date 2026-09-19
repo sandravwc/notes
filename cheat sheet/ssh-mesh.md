@@ -1,6 +1,5 @@
 ---
 title: cheat sheet/ssh-mesh
-tags: [cheat sheet]
 ---
 
 - ssh mesh, n machines any-to-any

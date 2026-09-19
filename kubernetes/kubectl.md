@@ -1,6 +1,5 @@
 ---
 title: kubernetes/kubectl
-tags: [kubernetes]
 ---
 
 - comfy to use: make yourself familiar with jq [[cheat sheet/jq]]

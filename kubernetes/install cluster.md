@@ -1,6 +1,5 @@
 ---
 title: kubernetes/install cluster
-tags: [kubernetes]
 ---
 
 - copypaste

@@ -1,6 +1,5 @@
 ---
 title: cheat sheet/clickhouse
-tags: [cheat sheet]
 ---
 
 - query rspamd mail log by symbol/domain/sender

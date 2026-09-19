@@ -1,6 +1,5 @@
 ---
 title: cheat sheet/freeipa
-tags: [cheat sheet]
 ---
 
 - kerberos + hostgroups + dns via ipa

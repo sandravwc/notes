@@ -1,6 +1,5 @@
 ---
 title: android/no-root-mount-limits
-tags: [android]
 ---
 
 - no fuse/nfs/cifs mount without root, confirmed

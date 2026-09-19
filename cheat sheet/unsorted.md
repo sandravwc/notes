@@ -1,6 +1,5 @@
 ---
 title: cheat sheet/unsorted
-tags: [cheat sheet]
 ---
 
 - ### here goes everything b4 being sorted

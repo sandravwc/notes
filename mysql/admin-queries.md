@@ -1,6 +1,5 @@
 ---
 title: mysql/admin-queries
-tags: [mysql]
 ---
 
 - show db data usage as seen by sql

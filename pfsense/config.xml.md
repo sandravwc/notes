@@ -1,6 +1,5 @@
 ---
 title: pfsense/config.xml
-tags: [pfsense]
 ---
 
 - xml in json für jq umwandeln

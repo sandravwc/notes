@@ -1,6 +1,5 @@
 ---
 title: android/adb-debloat
-tags: [android]
 ---
 
 - adb debloat, non-rooted

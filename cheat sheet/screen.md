@@ -1,6 +1,5 @@
 ---
 title: cheat sheet/screen
-tags: [cheat sheet]
 ---
 
 - scroll in screen

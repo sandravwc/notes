@@ -1,6 +1,5 @@
 ---
 title: android/adb-input-automation
-tags: [android]
 ---
 
 - drive an app via adb shell input

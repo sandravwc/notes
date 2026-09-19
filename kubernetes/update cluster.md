@@ -1,6 +1,5 @@
 ---
 title: kubernetes/update cluster
-tags: [kubernetes]
 ---
 
 - ### this documentation is intended to simplify the shift to auto update kubernetes clusters

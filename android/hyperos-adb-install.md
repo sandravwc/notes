@@ -1,6 +1,5 @@
 ---
 title: android/hyperos-adb-install
-tags: [android]
 ---
 
 - sideload apk on hyperos

@@ -1,6 +1,5 @@
 ---
 title: android/mealprep-server
-tags: [android]
 ---
 
 - repo: https://github.com/sandravwc/mealprep -- receipt photo -> gemma 4 e4b on poco -> stock json -> daily recipe push. phases 0-3 live 2026-09-17, phase 4 = fridge photo + npu (see docs/TODO.md)

@@ -1,6 +1,5 @@
 ---
 title: cheat sheet/enterprise linux
-tags: [cheat sheet]
 ---
 
 - [[cheat sheet/enterprise linux/comfy script]]

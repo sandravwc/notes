@@ -1,6 +1,5 @@
 ---
 title: cheat sheet/cassandra
-tags: [cheat sheet]
 ---
 
 - compaction per sstable

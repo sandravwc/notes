@@ -75,4 +75,4 @@ Logseq's `⁄` (U+2044 fraction slash, used because DB-graphs reject literal `/`
 
 ## Tags
 
-Logseq DB-graph "classes" (tags) were kept as a plain `tags:` frontmatter list. Foam has no tag-query system, so tag-based queries/filters from Logseq have no equivalent here.
+Logseq DB-graph "classes" (tags) were initially kept as a `tags:` frontmatter list, but every one of them (`android`, `ceph`, `cheat sheet`, `hypervisors`, `kafka`, `kubernetes`, `mysql`, `pacemaker`, `pfsense`) was just the category name a page already lives under as a directory (e.g. `cheat sheet/jq.md` tagged `cheat sheet`). Foam renders tags as their own graph nodes, so a tag and a same-named note (the category's hub page, e.g. `cheat sheet.md`) showed up as two nodes with an identical label. Since the directory already encodes the category, these tags were dropped as pure redundancy (2026-09-19). Foam's tag feature (`tags: [...]` frontmatter or inline `#tag`) is still real and usable for anything that actually cuts across categories.

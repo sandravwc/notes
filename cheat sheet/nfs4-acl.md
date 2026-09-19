@@ -1,6 +1,5 @@
 ---
 title: cheat sheet/nfs4-acl
-tags: [cheat sheet]
 ---
 
 - set nfsv4 acls

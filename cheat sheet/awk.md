@@ -1,6 +1,5 @@
 ---
 title: cheat sheet/awk
-tags: [cheat sheet]
 ---
 
 - pretty print for building sql queries

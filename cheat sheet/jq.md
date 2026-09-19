@@ -1,6 +1,5 @@
 ---
 title: cheat sheet/jq
-tags: [cheat sheet]
 ---
 
 - get json keys

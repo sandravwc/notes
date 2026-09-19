@@ -1,6 +1,5 @@
 ---
 title: hypervisors/xcp-ng
-tags: [hypervisors]
 ---
 
 - change disk size using xe

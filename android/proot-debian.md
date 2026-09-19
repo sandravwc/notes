@@ -1,6 +1,5 @@
 ---
 title: android/proot-debian
-tags: [android]
 ---
 
 - debian userland in termux via proot-distro

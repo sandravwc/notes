@@ -1,6 +1,5 @@
 ---
 title: mysql/admin
-tags: [mysql]
 ---
 
 - create dump 2 diff flavours

@@ -1,6 +1,5 @@
 ---
 title: cheat sheet/mail
-tags: [cheat sheet]
 ---
 
 - send test mail from command line

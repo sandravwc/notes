@@ -1,6 +1,5 @@
 ---
 title: cheat sheet/enterprise linux/comfy script
-tags: [cheat sheet]
 ---
 
 - atuin `sync_address` has to match atuin server url

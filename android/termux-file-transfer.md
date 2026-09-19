@@ -1,6 +1,5 @@
 ---
 title: android/termux-file-transfer
-tags: [android]
 ---
 
 - copy files between two termux installs, no root

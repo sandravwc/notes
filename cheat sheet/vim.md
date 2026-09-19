@@ -1,6 +1,5 @@
 ---
 title: cheat sheet/vim
-tags: [cheat sheet]
 ---
 
 - paste current file name

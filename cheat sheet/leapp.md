@@ -1,6 +1,5 @@
 ---
 title: cheat sheet/leapp
-tags: [cheat sheet]
 ---
 
 - the thing itself

@@ -1,6 +1,5 @@
 ---
 title: hypervisors/proxmox/comfy script
-tags: [hypervisors]
 ---
 
 - ```sh

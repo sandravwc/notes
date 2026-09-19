@@ -1,6 +1,5 @@
 ---
 title: cheat sheet/enterprise linux/install atuin server
-tags: [cheat sheet]
 ---
 
 - follow this after installing atuin

@@ -1,6 +1,5 @@
 ---
 title: kafka/auth/sasl_plaintext
-tags: [kafka]
 ---
 
 - ### All components involved in the setup must be adapted for authentication:

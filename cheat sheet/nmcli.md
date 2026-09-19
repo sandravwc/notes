@@ -1,6 +1,5 @@
 ---
 title: cheat sheet/nmcli
-tags: [cheat sheet]
 ---
 
 - create con

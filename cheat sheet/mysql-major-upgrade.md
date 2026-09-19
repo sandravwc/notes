@@ -1,6 +1,5 @@
 ---
 title: cheat sheet/mysql-major-upgrade
-tags: [cheat sheet]
 ---
 
 - percona mysql upgrade via pcs (5.7 -> 8.0 -> 8.4lts)

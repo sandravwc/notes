@@ -1,6 +1,5 @@
 ---
 title: pacemaker/mysql-cluster
-tags: [pacemaker]
 ---
 
 - enterprise linux 8

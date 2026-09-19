@@ -1,6 +1,5 @@
 ---
 title: kubernetes/change cri
-tags: [kubernetes]
 ---
 
 - from cri-o to containerd.io

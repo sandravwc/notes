@@ -1,6 +1,5 @@
 ---
 title: pacemaker/motd
-tags: [pacemaker]
 ---
 
 - marek-motd

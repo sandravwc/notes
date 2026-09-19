@@ -1,6 +1,5 @@
 ---
 title: pfsense/RESTApi
-tags: [pfsense]
 ---
 
 - ## installation

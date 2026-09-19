@@ -1,6 +1,5 @@
 ---
 title: android/dotnet-arm64-proot
-tags: [android]
 ---
 
 - .net 8 arm64 inside proot debian

@@ -1,6 +1,5 @@
 ---
 title: cheat sheet/bash
-tags: [cheat sheet]
 ---
 
 - parameter expansion search and replace

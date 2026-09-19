@@ -1,6 +1,5 @@
 ---
 title: kubernetes/change storage class
-tags: [kubernetes]
 ---
 
 - assuming changing from longhorn to ceph

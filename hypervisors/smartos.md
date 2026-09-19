@@ -1,6 +1,5 @@
 ---
 title: hypervisors/smartos
-tags: [hypervisors]
 ---
 
 - update nic for carp/vrrp

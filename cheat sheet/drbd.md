@@ -1,6 +1,5 @@
 ---
 title: cheat sheet/drbd
-tags: [cheat sheet]
 ---
 
 - resize disk

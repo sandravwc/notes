@@ -1,6 +1,5 @@
 ---
 title: pfsense/RESTApi/Certificate Revocation
-tags: [pfsense]
 ---
 
 - get vpn certificates meta data to revoke

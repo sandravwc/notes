@@ -1,6 +1,5 @@
 ---
 title: cheat sheet/lvm
-tags: [cheat sheet]
 ---
 
 - create fs + mount

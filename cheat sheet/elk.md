@@ -1,6 +1,5 @@
 ---
 title: cheat sheet/elk
-tags: [cheat sheet]
 ---
 
 - moving indices between nodes
