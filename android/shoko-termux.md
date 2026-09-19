@@ -22,4 +22,9 @@ title: android/shoko-termux
   # sv restart shoko under proot never worked (TERM lost in ptrace), native it does
   # pkill -f Shoko.CLI from ssh kills the ssh session too (matches own cmdline). pkill -x
   # ~/shoko/dotnet: rm -rf sdk packs templates after install, 700M -> 200M, runtime = host/ + shared/
+  # TimeZoneNotFoundException 'Tokyo Standard Time': .net reads /usr/share/zoneinfo, termux has no tzdata pkg at all
+  rsync -a --exclude right --exclude posix /usr/share/zoneinfo/ poco:shoko/zoneinfo/   # TZDIR=$HOME/shoko/zoneinfo in run
+  # "failed to read MediaInfo" on every file = shoko spawns termux's bionic `mediainfo`, child inherited the glibc LD_PRELOAD shim
+  patchelf --add-needed ~/shoko/libifaddrs_shim.so ~/shoko/app/Shoko.CLI   # DT_NEEDED instead, no env, children clean. shoko stopped or "Text file busy"
+  # sv restart: shoko drains jobs 30s+, sv says "timeout" at 7s, it does stop. sv kill when in a hurry
   ```

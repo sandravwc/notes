@@ -10,6 +10,7 @@ title: android/glibc-runner
   grun -c ./binary                               # patches ELF interpreter + rpath once, then runs as itself (/proc/self/exe correct)
   env -u LD_PRELOAD ./binary                     # termux LD_PRELOAD is a bionic .so, glibc loader chokes: "libc.so: invalid ELF header"
   # never export a glibc .so in LD_PRELOAD in a normal shell -> every bionic program after it fails to link
+  # same for the app's children: a glibc app that spawns bionic tools (mediainfo, ffmpeg) must not carry LD_PRELOAD. patchelf --add-needed the shim into the exe instead
   # gcc: pkg install gcc-glibc binutils-glibc; env -u LD_PRELOAD PATH=$PREFIX/glibc/bin:$PATH gcc ...
   ```
 
@@ -20,6 +21,7 @@ title: android/glibc-runner
   grun -c ~/app/dotnet/dotnet; grun -c ~/app/App    # apphost + muxer
   DOTNET_ROOT=~/app/dotnet DOTNET_gcServer=0 ./App
   # sdk (dotnet build/restore) dies on a named mutex: /tmp/.dotnet/shm hardcoded, termux has no /tmp. runtime fine, build elsewhere
+  # timezones: no tzdata pkg in termux, copy /usr/share/zoneinfo from any linux box, TZDIR=...
   # vs linux-bionic-arm64 RID: official, but any glibc-only native dep (Magick.Native...) blocks it
   ```
 
