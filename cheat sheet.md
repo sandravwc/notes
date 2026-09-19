@@ -24,4 +24,4 @@ title: cheat sheet
 - [[cheat sheet/clickhouse]]
 - [[cheat sheet/freeipa]]
 - [[cheat sheet/mysql-failover]]
--
+- [[cheat sheet/ssh-mesh]]
