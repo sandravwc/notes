@@ -16,3 +16,6 @@ title: android
 - [[android/tailscale-termux-build]]
 - [[android/haproxy-termux]]
 - [[android/anubis-termux]]
+- [[android/glibc-runner]]
+- [[android/shoko-termux]]
+- [[android/nfs-export]]

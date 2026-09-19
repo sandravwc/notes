@@ -19,4 +19,10 @@ title: android/proot-debian
     screen -dmS debian proot-distro login debian --user srv-admin
     # screen socket dir root-owned/700 inside proot rootfs -> export SCREENDIR=$HOME/.screen
     # never auto-chain into proot from .bashrc (exec proot-distro login ...) -- pty output can vanish, hangs every future termux launch
+    # host dirs: --bind /storage/XXXX-XXXX:/mnt/ssd (not --mount, no such flag). per login! sshd/screen/service each need their own --bind
+    # first --bind leaves rootfs/mnt/ssd as a mode-000 placeholder -> a login without the bind shows "Permission denied", not "not found"
+    # sv restart of a dotnet app inside proot: TERM never arrives, kill -9 the proot pid
+    proot-distro remove debian    # "container busy (PID n: login)" -> kill that pid first
     ```
+
+- replaced by [[android/glibc-runner]] for glibc binaries, 2026-09-19

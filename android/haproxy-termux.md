@@ -40,10 +40,27 @@ title: android/haproxy-termux
       stats uri /
   ```
 
-- runit run script
+- runit run script, config dir: every *.cfg in name order, one backend file per app repo symlinked in
 
   ```sh
   #!/data/data/com.termux/files/usr/bin/sh
   exec 2>&1
-  exec haproxy -W -db -f $HOME/repo/deploy/haproxy.cfg
+  exec haproxy -W -db -f $HOME/haproxy.d
+  # ~/haproxy.d/00-base.cfg  global/defaults/frontends (box level)
+  # ~/haproxy.d/10-app.cfg -> ~/app/repo/deploy/haproxy.cfg   "backend app" only
+  ```
+
+- one wildcard cert, backend by subdomain, no per-app acl
+
+  ```txt
+  frontend https
+      ...
+      use_backend %[req.hdr(host),lower,field(1,.)]    # shoko.poco.example -> backend shoko; unknown/bare host -> default
+      default_backend mealprep
+  ```
+
+  ```sh
+  acme.sh --issue --server letsencrypt --dns dns_autodns -d poco.example -d '*.poco.example'
+  acme.sh --install-cert -d poco.example --ecc --fullchain-file ... --key-file ... --reloadcmd "sh install-cert.sh"   # --issue alone does not reinstall
+  # subdomains as CNAME -> poco, dyndns keeps rewriting one A record
   ```

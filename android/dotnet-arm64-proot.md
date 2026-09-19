@@ -19,3 +19,5 @@ title: android/dotnet-arm64-proot
     # unversioned build (1.0.0.0) can break upstream version-compat checks -- inject real version like the project's own CI does:
     dotnet publish ... -p:Version=5.3.3 -p:InformationalVersion="5.3.3+<commit-sha>"   # quote it, msbuild splits InformationalVersion on unquoted commas
     ```
+
+- superseded: same publish output runs native via [[android/glibc-runner]], no proot
