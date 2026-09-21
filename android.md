@@ -20,3 +20,4 @@ title: android
 - [[android/shoko-termux]]
 - [[android/nfs-export]]
 - [[android/prometheus-termux]]
+- [[android/hexagon-npu-llm]]

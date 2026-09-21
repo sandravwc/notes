@@ -21,7 +21,5 @@ title: android/adb-vendor-libs
   ```sh
   adb shell 'ls /vendor/lib64/libOpenCL.so /vendor/lib64/libcdsprpc.so; getprop ro.soc.model'
   # SM8475 = 8+ gen 1: adreno 730 opencl works this way
-  # hexagon v69: llama.cpp ships HTP v73+ only -> no. executorch + qnn -> yes, same adb-shell route:
-  # github.com/avisre/snapdragon-npu-llm, prebuilt K9FxNa/Qwen3-0.6B-SM8450-Hybrid, LD_LIBRARY_PATH + ADSP_LIBRARY_PATH=$PWD
-  # v69 = 8 mb vtcm: sub-1b models, no vlm. claimed 31 tok/s decode on 8 gen 1
+  # hexagon v69: llama.cpp ships HTP v73+ only -> no. executorch + qnn -> yes, verified, see [[android/hexagon-npu-llm]]
   ```
