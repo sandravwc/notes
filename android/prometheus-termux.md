@@ -29,6 +29,22 @@ title: android/prometheus-termux
   # + textfile.sh cron */1: battery (termux-battery-status), load, cpu busy, thermal -> textfile dir
   ```
 
+- web: prom./alerts./grafana. through haproxy on the wildcard cert
+
+  ```sh
+  # prometheus + alertmanager have no login. auth at haproxy, not in the apps: their own --web.config.file basic auth
+  # breaks every loopback client (self-scrape, prometheus->alertmanager push, grafana datasource)
+  # termux haproxy: no crypt(3) -> userlist must be insecure-password -> keep it out of the repo
+  ~/haproxy.d/05-auth.cfg   # userlist monitoring / user mrk insecure-password <pw>, 0600
+  backend prom
+      http-request auth realm prometheus unless { http_auth(monitoring) }
+  # --web.external-url=https://prom.<zone>:8443/ so ntfy alert links point at the public ui
+  # 401 with empty body = cheapest l7 answer, no anubis needed in front of auth'd backends
+  # grafana: pkg install grafana (12.x). grafana server --homepath $PREFIX/share/grafana --config <ini>
+  #   ini [paths] data/logs/plugins/provisioning absolute, [server] http_addr 127.0.0.1 root_url https://grafana.<zone>:8443/
+  #   admin pw via GF_SECURITY_ADMIN_PASSWORD in an env file. datasource + dashboard provisioned from the repo (read-only in the ui)
+  ```
+
 - gotchas
 
   ```sh

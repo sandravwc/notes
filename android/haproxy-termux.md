@@ -64,3 +64,14 @@ title: android/haproxy-termux
   acme.sh --install-cert -d poco.example --ecc --fullchain-file ... --key-file ... --reloadcmd "sh install-cert.sh"   # --issue alone does not reinstall
   # subdomains as CNAME -> poco, dyndns keeps rewriting one A record
   ```
+
+- basic auth
+
+  ```sh
+  # termux build has no crypt(3): "encrypted passwords will not work" -> insecure-password only, so the userlist goes in a
+  # non-repo file in the config dir (~/haproxy.d/05-auth.cfg, 0600). userlist must be loaded before the backend that references it (name order)
+  userlist monitoring
+      user mrk insecure-password <pw>
+  backend prom
+      http-request auth realm prometheus unless { http_auth(monitoring) }
+  ```
