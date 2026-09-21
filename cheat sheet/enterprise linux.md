@@ -107,6 +107,17 @@ title: cheat sheet/enterprise linux
     esac
   }
   blehook complete_load!='ble/function#advice after ble/complete/progcomp/adjust-third-party-completions my/adjust-scp-completions'
+
+  # ambiguous completion inserts the common prefix backslash-escaped, requote as an open '... instead
+  function my/requote-common-prefix {
+    ((cand_count>1)) && [[ $ret != "$COMPS" && $ret == *\\* && $COMPS != *[\\\$\`~=:{]* && $comps_flags != *[SEDI]* ]] || return 0
+    local word=$ret simple_flags simple_ibrace count
+    ble/syntax:bash/simple-word/reconstruct-incomplete-word "$word" &&
+      ble/complete/source/eval-simple-word "$ret" single:count && ((count==1)) || { ret=$word; return 0; }
+    local q=\' Q="'\''"
+    ret=$q${ret//$q/$Q}
+  }
+  blehook complete_load!='ble/function#advice after ble/complete/candidates/determine-common-prefix my/requote-common-prefix'
   ble-import -d integration/fzf-completion
   ble-import -d integration/fzf-key-bindings
   ```
