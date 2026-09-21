@@ -108,16 +108,41 @@ title: cheat sheet/enterprise linux
   }
   blehook complete_load!='ble/function#advice after ble/complete/progcomp/adjust-third-party-completions my/adjust-scp-completions'
 
-  # ambiguous completion inserts the common prefix backslash-escaped, requote as an open '... instead
-  function my/requote-common-prefix {
-    ((cand_count>1)) && [[ $ret != "$COMPS" && $ret == *\\* && $COMPS != *[\\\$\`~=:{]* && $comps_flags != *[SEDI]* ]] || return 0
-    local word=$ret simple_flags simple_ibrace count
-    ble/syntax:bash/simple-word/reconstruct-incomplete-word "$word" &&
-      ble/complete/source/eval-simple-word "$ret" single:count && ((count==1)) || { ret=$word; return 0; }
-    local q=\' Q="'\''"
-    ret=$q${ret//$q/$Q}
+  # complete_requote_threshold compares the quoted length with the escaped one; a single special char loses by one -> discount the two quotes
+  function my/patch-requote-threshold {
+    local def; def=$(declare -f ble/complete/action/requote-final-insert)
+    builtin eval -- "${def/'((${#ret}+threshold<=${#ins}))'/'((${#ret}-2+threshold<=${#ins}))'}"
   }
-  blehook complete_load!='ble/function#advice after ble/complete/candidates/determine-common-prefix my/requote-common-prefix'
+
+  # ambiguous completion inserts the common prefix backslash-escaped, requote as an open '...
+  function my/requote-common-insert {
+    [[ " ${ADVICE_FUNCNAME[*]} " == *' ble/complete/insert-common '* ]] && ((cand_count>1)) || return 0
+    local word=${ADVICE_WORDS[3]}
+    [[ $word != "$COMPS" && $word == *\\* && $COMPS != *[\\\$\`~=:{]* && $comps_flags != *[SEDI]* ]] || return 0
+    local ret simple_flags simple_ibrace count
+    ble/syntax:bash/simple-word/reconstruct-incomplete-word "$word" &&
+      ble/complete/source/eval-simple-word "$ret" single:count && ((count==1)) || return 0
+    local q=\' Q="'\\''"
+    ADVICE_WORDS[3]=$q${ret//$q/$Q}
+  }
+  blehook complete_load!='my/patch-requote-threshold; ble/function#advice before ble/complete/insert my/requote-common-insert'
+
+  # menu-complete (tab-tab cycling) inserts the raw escaped candidate, requote like the final insert
+  function my/requote-menu-selection {
+    local nsel=${ADVICE_WORDS[1]}
+    ((nsel>=0)) && [[ :$bleopt_complete_menu_complete_opts: == *:insert-selection:* ]] || return 0
+    local COMP1=${_ble_complete_menu0_comp[0]} COMP2=${_ble_complete_menu0_comp[1]}
+    local COMPS=${_ble_complete_menu0_comp[2]} COMPV=${_ble_complete_menu0_comp[3]}
+    local comp_type=${_ble_complete_menu0_comp[4]} comps_flags=${_ble_complete_menu0_comp[5]} comps_fixed=${_ble_complete_menu0_comp[6]}
+    local "${_ble_complete_cand_varnames[@]/%/=}"
+    ble/complete/cand/unpack "${_ble_complete_menu_items[nsel]}"
+    local insert=$INSERT insert_flags= suffix=
+    ble/complete/action/requote-final-insert
+    [[ $insert != "$INSERT" ]] || return 0
+    ble-edit/content/replace-limited "$_ble_complete_menu0_beg" "$_ble_edit_ind" "$insert"
+    ((_ble_edit_ind=_ble_complete_menu0_beg+${#insert}))
+  }
+  blehook complete_load!='ble/function#advice after ble/complete/menu-complete.class/onselect my/requote-menu-selection'
   ble-import -d integration/fzf-completion
   ble-import -d integration/fzf-key-bindings
   ```
