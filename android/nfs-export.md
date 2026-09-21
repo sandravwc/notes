@@ -15,9 +15,20 @@ title: android/nfs-export
 - client, port must be given (no portmapper)
 
   ```sh
-  # fstab
-  <phone ip>:/ /mnt/shoko_ds1 nfs port=2049,mountport=2049,tcp,nolock,vers=3,nofail,_netdev,x-systemd.automount 0 0
+  # fstab. soft, not hard (see below)
+  <phone ip>:/ /mnt/shoko_ds1 nfs port=2049,mountport=2049,tcp,nolock,vers=3,soft,timeo=50,retrans=3,nofail,_netdev,x-systemd.automount 0 0
   # ~70 MB/s write, ~45 read over wifi (poco f5 pro, usb ssd). df on the mount lies, rclone vfs
+  ```
+
+- stale handles after a rename through the mount
+
+  ```sh
+  # rclone handles are path-based (disk cache = handle<->path). mv a dir via the client -> every handle for that tree ESTALE
+  # kernel nfsd keys on inodes, rclone can't. restarting rclone changes nothing
+  # hard mount: client retries forever, gnome/ls/shell wedge, reboot. soft: EIO after timeo*retrans
+  # move big trees on the poco (ssh mv, or shoko's own rename), not through the mount
+  # never `ls` a suspect nfs mount from a session you need: cat /proc/mounts, dmesg | grep -i nfs, timeout 3 stat
+  # dmesg "[UFW BLOCK] SRC=<poco> SPT=2049" after a reboot = server still talking to the dead tcp session, harmless
   ```
 
 - runit: [[android/shoko-termux]] `deploy/sv-nfs.run`
