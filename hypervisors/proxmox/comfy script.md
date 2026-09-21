@@ -20,6 +20,25 @@ title: hypervisors/proxmox/comfy script
   bleopt prompt_eol_mark=''
   bleopt complete_menu_filter=
   bleopt history_share=1
+  # bash-completion pre-escapes rsync/scp local paths (scp style), ble.sh would quote them a second time
+  function my/scp-dequote-compreply {
+    case ${COMP_WORDS[0]} in (rsync|scp) ;; (*) return 0 ;; esac
+    ((${#COMPREPLY[@]})) || return 0
+    # fzf wrapper calls the advised original -> runs twice per request
+    [[ $_my_scp_dequoted == "$COMP_LINE:$COMP_POINT" ]] && return 0
+    _my_scp_dequoted=$COMP_LINE:$COMP_POINT
+    local i ret
+    for i in "${!COMPREPLY[@]}"; do
+      ble/syntax:bash/simple-word/eval "${COMPREPLY[i]% }" && COMPREPLY[i]=$ret
+    done
+  }
+  function my/adjust-scp-completions {
+    case $comp_func in
+    (_comp_cmd_rsync|_comp_cmd_scp|_rsync|_scp|_fzf_path_completion)
+      ble/function#advice after "$comp_func" my/scp-dequote-compreply ;;
+    esac
+  }
+  blehook complete_load!='ble/function#advice after ble/complete/progcomp/adjust-third-party-completions my/adjust-scp-completions'
   BLESHRC
   
   cat <<- 'MOTDSH' > /etc/profile.d/motd.sh
