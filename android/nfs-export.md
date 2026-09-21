@@ -42,5 +42,13 @@ title: android/nfs-export
   # dmesg "[UFW BLOCK] SRC=<poco> SPT=2049" after a reboot = server still talking to the dead tcp session, harmless
   ```
 
+- "server not responding, timed out" while shoko imports
+
+  ```sh
+  # not stale. shoko hashing = every file read through android's fuse daemon at full speed, rclone's requests queue behind it,
+  # soft mount gives up after timeo*retrans. passes when the hash run ends. dmesg tells the two apart: "Stale file handle" vs "not responding"
+  # check: shoko log for Hasher / ProcessFileJob, termux_load1 on the poco
+  ```
+
 - runit: [[android/shoko-termux]] `deploy/sv-nfs.run`
 - sshfs alternative: nothing to install, sshd sftp subsystem is on by default, slower (ssh crypto on the phone)

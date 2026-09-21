@@ -27,4 +27,5 @@ title: android/shoko-termux
   # "failed to read MediaInfo" on every file = shoko spawns termux's bionic `mediainfo`, child inherited the glibc LD_PRELOAD shim
   patchelf --add-needed ~/shoko/libifaddrs_shim.so ~/shoko/app/Shoko.CLI   # DT_NEEDED instead, no env, children clean. shoko stopped or "Text file busy"
   # sv restart: shoko drains jobs 30s+, sv says "timeout" at 7s, it does stop. sv kill when in a hurry
+  # log "Unable to load shared library 'librhash'" -> C# fallback hashing, slow + hot. pkg install rhash-glibc; ln -s $PREFIX/glibc/lib/librhash.so ~/shoko/app/
   ```
