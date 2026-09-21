@@ -5,9 +5,7 @@ title: android/haproxy-termux
 - haproxy rootless in termux
 
   ```sh
-  pkg install haproxy          # 3.4 as of 2026-09
-  haproxy -c -f cfg            # config check
-  haproxy -W -db -f cfg        # foreground master-worker, for runit
+  pkg install haproxy          # 3.4 as of 2026-09, flags: [[cheat sheet/haproxy]]
   # ports > 1024 only, no root. bind :8443 not :443, router forwards 443 -> 8443 if wanted
   # cert = one pem, chain + key concatenated. acme.sh reloadcmd:
   cat fullchain.pem key.pem > haproxy.pem && chmod 600 haproxy.pem && SVDIR=$PREFIX/var/service sv restart haproxy

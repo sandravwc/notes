@@ -26,3 +26,4 @@ title: cheat sheet
 - [[cheat sheet/mysql-failover]]
 - [[cheat sheet/ssh-mesh]]
 - [[cheat sheet/acme-autodns]]
+- [[cheat sheet/haproxy]]

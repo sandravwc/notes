@@ -61,7 +61,6 @@ title: android/prometheus-termux
 - gotchas
 
   ```sh
-  # `( bin ... & )` test runs from ssh leave orphans holding the port; sv then flaps "down 0s" forever. find by comm, kill by pid
   # amtool alert add ... --annotation=summary='"quote the value"'   (new matcher parser)
   # termux-battery-status current: negative = charging (xiaomi). "plugged + current > 0 for 10m" = the cable alert
   ```
