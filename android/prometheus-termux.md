@@ -42,7 +42,20 @@ title: android/prometheus-termux
   # 401 with empty body = cheapest l7 answer, no anubis needed in front of auth'd backends
   # grafana: pkg install grafana (12.x). grafana server --homepath $PREFIX/share/grafana --config <ini>
   #   ini [paths] data/logs/plugins/provisioning absolute, [server] http_addr 127.0.0.1 root_url https://grafana.<zone>:8443/
-  #   admin pw via GF_SECURITY_ADMIN_PASSWORD in an env file. datasource + dashboard provisioned from the repo (read-only in the ui)
+  #   admin pw via GF_SECURITY_ADMIN_PASSWORD in an env file. datasource provisioned from the monitoring repo,
+  #   dashboards from a clone of `sandravwc/grafana-dashboards` (file provider re-reads every 10s, read-only in the ui: edit json, push, pull)
+  # haproxy metrics: termux build has no PROMEX -> haproxy_exporter on the stats socket (`stats socket ~/haproxy.sock mode 600 level operator`)
+  ```
+
+- grafana dashboard json, things that bit
+
+  ```sh
+  # stat panel 0/1 -> UP/DOWN: fieldConfig.defaults.mappings [{type: value, options: {"0": {text: DOWN, color: red}, "1": {text: UP, color: green}}}], graphMode none
+  # stat text size: options.text {titleSize, valueSize}; two units in one stat = second query + fieldConfig.overrides byName (unit, thresholds)
+  # instant: true on stat queries, else stale series from the time range keep showing as tiles
+  # rows: {type: row, gridPos h:1}; panels below need y > row y. grouping by service, not by metric type
+  # matching panels by title: rows and stats can share a title, filter on type too (deleted the rows once)
+  # blackbox probes count as real requests in haproxy counters -> public probes every 2m, not 30s
   ```
 
 - gotchas
