@@ -19,6 +19,7 @@ title: hypervisors/proxmox/comfy script
   bleopt complete_ambiguous=
   bleopt prompt_eol_mark=''
   bleopt complete_menu_filter=
+  bleopt history_share=1
   BLESHRC
   
   cat <<- 'MOTDSH' > /etc/profile.d/motd.sh
