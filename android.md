@@ -19,3 +19,4 @@ title: android
 - [[android/glibc-runner]]
 - [[android/shoko-termux]]
 - [[android/nfs-export]]
+- [[android/prometheus-termux]]

@@ -30,7 +30,7 @@ title: android/glibc-runner
   ```sh
   # netlink bind()            -> getifaddrs() EACCES, python socket.if_nameindex() EACCES, ip addr fails
   # SIOCGIFINDEX on AF_UNIX   -> if_nametoindex() = 0
-  # /proc/net/*, /sys/class/net, /proc/sys/net -> EACCES
+  # /proc/net/*, /sys/class/net, /proc/sys/net -> EACCES. also /proc/stat, /proc/loadavg, /proc/vmstat, /proc/uptime (see [[android/prometheus-termux]])
   # same ioctls on an AF_INET socket work: SIOCGIFCONF, SIOCGIFFLAGS, SIOCGIFINDEX (SIOCGIFHWADDR not)
   # fix = LD_PRELOAD shim reimplementing getifaddrs/if_nametoindex over ioctl: shoko-termux/shim/ifaddrs_shim.c
   # .net PAL needs an AF_PACKET entry per iface too, it sizes its addr array as (entries - inet entries)
