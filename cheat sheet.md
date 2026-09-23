@@ -28,3 +28,4 @@ title: cheat sheet
 - [[cheat sheet/ssh-mesh]]
 - [[cheat sheet/acme-autodns]]
 - [[cheat sheet/haproxy]]
+- [[cheat sheet/ffmpeg]]
