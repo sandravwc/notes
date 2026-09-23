@@ -8,23 +8,23 @@ title: cheat sheet/enterprise linux/comfy script
 - enterprise linux (8|9) and higher generic: [el.sh](https://github.com/sandravwc/comfy-env/blob/master/el.sh)
 
   ```sh
-  curl -fsSLO https://github.com/sandravwc/comfy-env/raw/master/el.sh && bash el.sh
+  curl -fsSL https://github.com/sandravwc/comfy-env/archive/master.tar.gz | tar xz && bash comfy-env-master/el.sh
   ```
 
 - enterprise linux 8 and higher zfs: [el-zfs.sh](https://github.com/sandravwc/comfy-env/blob/master/el-zfs.sh)
 
   ```sh
-  curl -fsSLO https://github.com/sandravwc/comfy-env/raw/master/el-zfs.sh && bash el-zfs.sh
+  curl -fsSL https://github.com/sandravwc/comfy-env/archive/master.tar.gz | tar xz && bash comfy-env-master/el-zfs.sh
   ```
 
 - enterprise linux (8|9) kubernetes: [el-k8s.sh](https://github.com/sandravwc/comfy-env/blob/master/el-k8s.sh)
 
   ```sh
-  curl -fsSLO https://github.com/sandravwc/comfy-env/raw/master/el-k8s.sh && bash el-k8s.sh
+  curl -fsSL https://github.com/sandravwc/comfy-env/archive/master.tar.gz | tar xz && bash comfy-env-master/el-k8s.sh
   ```
 
 - enterprise linux 7 generic: [el7.sh](https://github.com/sandravwc/comfy-env/blob/master/el7.sh)
 
   ```sh
-  curl -fsSLO https://github.com/sandravwc/comfy-env/raw/master/el7.sh && bash el7.sh
+  curl -fsSL https://github.com/sandravwc/comfy-env/archive/master.tar.gz | tar xz && bash comfy-env-master/el7.sh
   ```
