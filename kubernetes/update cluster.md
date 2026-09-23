@@ -74,7 +74,7 @@ title: kubernetes/update cluster
 
   - alternatively, just search and replace your repofiles if you're in the loop
 
-  - ```bash
+    ```bash
     sed -i 's/v1.33/v1.34/g' /etc/yum.repos.d/{kubernetes,cri-o}.repo
     ```
 

@@ -4,7 +4,7 @@ title: cheat sheet/freeipa
 
 - kerberos + hostgroups + dns via ipa
 
-  - ```sh
+    ```sh
     echo "<redacted>" | kinit admin
     ipa hostgroup-find --all --raw | grep "cn: "
     ipa hostgroup-show <group> --raw | awk -F "=|,|\\\\." '/member/ {print $2}'

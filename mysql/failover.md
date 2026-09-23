@@ -1,10 +1,10 @@
 ---
-title: cheat sheet/mysql-failover
+title: mysql/failover
 ---
 
 - mysql master/slave failover behind keepalived
 
-  - ```sh
+    ```sh
     cp /etc/keepalived/conf/db-pair.conf /etc/keepalived/conf/db-pair.conf.failover
     vi /etc/keepalived/conf/db-pair.conf.failover   # swap real ips
     sed -i '/db-pair.conf/s/^/#/' /etc/keepalived/keepalived.conf

@@ -18,3 +18,27 @@ title: cheat sheet/vim
   insert desired text
   <Esc> - exit insert mode and finish block append
   ```
+
+- comment out a line range, and undo it
+
+  ```txt
+  :14,52s/^/#
+  :14,52s/^#
+  ```
+
+- delete matching lines
+
+  ```txt
+  :g/^\;/d     lines starting with ;
+  :g/^$/d      empty lines, sed equivalent: -r '/^\s*$/d'
+  ```
+
+- yank targets
+
+  ```txt
+  y$   to end of line
+  y^   to start of line
+  yw   to next word
+  yiw  current word
+  v / V / ctrl-v to select first
+  ```

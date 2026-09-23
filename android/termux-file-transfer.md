@@ -4,7 +4,7 @@ title: android/termux-file-transfer
 
 - copy files between two termux installs, no root
 
-  - ```sh
+    ```sh
     # termux $HOME is sandboxed, run-as needs a debuggable app -- not available
     tar -czf ~/storage/downloads/transfer.tar.gz -C ~ workdir     # source, inside termux
     adb -s <source-serial> pull /sdcard/Download/transfer.tar.gz

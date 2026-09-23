@@ -19,3 +19,9 @@ title: cheat sheet/bash
   ```sh
   awk -F "]=" '/check_mysql/ {print $2}' /etc/nagios/nrpe_local.cfg | xargs -I % sh -c "echo %; %; echo \$?; echo"
   ```
+
+- print every fg/bg colour pair
+
+  ```sh
+  for ID1 in {1..50}; do for ID in {1..256}; do printf "\033[${ID1};5;${ID}m %s\n" "${ID1} ${ID}"; done; done
+  ```

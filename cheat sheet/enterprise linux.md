@@ -170,9 +170,35 @@ title: cheat sheet/enterprise linux
   dnf install glibc-langpack -en
   ```
 
-- check tls certificate
+- yum/dnf repo file layout
 
   ```sh
-  openssl x509 -noout -text -in cert.crt
-  openssl x509 -noout -dates -in cert.crt
+  [custom]
+  name=Custom Development repository
+  type=rpm-md
+  metadata_expire=0
+  http_caching=packages
+  baseurl=https://repo.example.internal/nexus/content/repositories/company.releases/
+  gpgcheck=0
+  enabled=0
+
+  [AmazonCorretto]
+  name=Amazon Corretto
+  baseurl=https://yum.corretto.aws/$basearch
+  enabled=1
+  gpgkey=https://yum.corretto.aws/corretto.key
+  gpgcheck=1
+  ```
+
+- centos 7 is EOL, repoint the dead mirrorlist at vault
+
+  ```sh
+  sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-Linux-*
+  sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.epel.cloud|g' /etc/yum.repos.d/CentOS-Linux-*
+  ```
+
+- unpack an rpm without installing it
+
+  ```sh
+  rpm2cpio foo.rpm | cpio -idmv
   ```

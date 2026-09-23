@@ -4,7 +4,7 @@ title: android/adb-input-automation
 
 - drive an app via adb shell input
 
-  - ```sh
+    ```sh
     # screenshot coords need scaling to real device resolution (e.g. displayed 900x2000 for real 1080x2400 -> *1.2)
     adb shell input text 'single-quote the whole payload'   # ; > $ etc get eaten by adb's own remote shell otherwise
     # input text decodes literal %s as space -- breaks strings that already contain %s (e.g. printf '%s\n')

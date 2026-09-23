@@ -5,7 +5,7 @@ title: android/mealprep-server
 - repo: <https://github.com/sandravwc/mealprep> -- receipt photo -> gemma 4 e4b on poco -> stock json -> daily recipe push. phases 0-3 live 2026-09-17, phase 4 = fridge photo + npu (see docs/TODO.md)
 - poco services + cron
 
-  - ```sh
+    ```sh
     export SVDIR=$PREFIX/var/service   # non-login ssh needs it
     sv status mealprep crond           # mealprep: app.py :8090 http + :8443 https. llama service exists but disabled
     # logs: $PREFIX/var/log/sv/<name>/current
@@ -13,7 +13,7 @@ title: android/mealprep-server
     # */5 intake.py, */5 fridge.py, 16:50 janitor.py, */15 suggest.py --due (meals+times from data/config.json), acme.sh renew 4x/day
     ```
 
-  - ```sh
+    ```sh
     # runsvdir does not start on boot by itself
     cat ~/.termux/boot/10-services.sh
     # export SVDIR=...; . $PREFIX/etc/profile.d/start-services.sh
@@ -21,14 +21,14 @@ title: android/mealprep-server
 
 - deploy
 
-  - ```sh
+    ```sh
     cd ~/mealprep/repo && git pull && sv restart mealprep
     # intake/suggest/janitor are one-shot, pick up the pull on next run
     ```
 
 - llama-server gemma 4 e4b vision
 
-  - ```sh
+    ```sh
     # no resident server anymore: intake.llm() starts this per job, stops it after (5 gb resident got termux killed twice)
     ./llama.cpp/build-cpu/bin/llama-server -m models/gemma-4-E4B-it-Q4_0.gguf --mmproj models/mmproj-gemma-4-E4B-it-Q8_0.gguf --jinja -t 8 -c 4096 --host 127.0.0.1 --port 8080
     # request must carry "chat_template_kwargs":{"enable_thinking":false} or gemma thinks until max_tokens
@@ -37,7 +37,7 @@ title: android/mealprep-server
 
 - data + secrets
 
-  - ```sh
+    ```sh
     ~/mealprep/data/{inventory,receipts,suggestions,profile,config,aliases}.json
     ~/mealprep/receipts/*.jpg   # syncthing folder
     ~/mealprep/.env             # NTFY_TOPIC, BASE_URL, never in repo
@@ -47,7 +47,7 @@ title: android/mealprep-server
 
 - gpu/npu from termux: dead on 8+ gen 1 (sm8475), gpu works from adb shell
 
-  - ```txt
+    ```txt
     opencl: linker namespace blocks /vendor/lib64/libOpenCL.so for untrusted_app, opencl-vendor-driver shim exports nothing usable
     hexagon: llama.cpp htp libs v73+ only, 8+ gen 1 = v69
     litert+qnn lists sm8450 but apk only
@@ -57,7 +57,7 @@ title: android/mealprep-server
 
 - gotchas
 
-  - ```txt
+    ```txt
     pkill -f <name> from an ssh one-liner kills the ssh bash itself (cmdline matches). use pkill -x
     backgrounding jobs inside ssh -c hangs the session, run ssh itself in background instead
     fcntl.flock(open(...)) without keeping the handle = no lock at all (gc closes it)
@@ -65,7 +65,7 @@ title: android/mealprep-server
 
 - adreno opencl from adb shell (termux can't, untrusted_app namespace)
 
-  - ```sh
+    ```sh
     # termux: stage binaries + every NEEDED lib + model into shared storage (both uids read /sdcard)
     cd ~/mealprep/llama.cpp/build-ocl/bin
     cp *.so* llama-bench llama-server $PREFIX/lib/libc++_shared.so $PREFIX/lib/libssl.so.3 $PREFIX/lib/libcrypto.so.3 model.gguf ~/storage/shared/llm/
@@ -81,7 +81,7 @@ title: android/mealprep-server
 
 - gemma e4b vision quirks
 
-  - ```txt
+    ```txt
     small vlms parrot example product names from the prompt -> describe the rule, never list examples
     qwen3-vl-2b at temp 0 loops one word until max_tokens on cluttered photos -> unusable without repeat penalty
     --image-max-tokens 1024 on llama-server bounds qwen's native-res token blowup (1440x1920 photo = 300 s otherwise)
@@ -90,7 +90,7 @@ title: android/mealprep-server
 
 - https: acme.sh dns-01 via autodns, no reverse proxy
 
-  - ```sh
+    ```sh
     # api user = clone of main user in autodns. needs zone read + update + BULK update (0202001, what acme.sh uses)
     curl -s https://get.acme.sh | sh -s email=<mail>
     AUTODNS_USER=<clone> AUTODNS_PASSWORD=<pw> AUTODNS_CONTEXT=4 ~/.acme.sh/acme.sh --issue --server letsencrypt --dns dns_autodns -d poco.xn--bdk.dog
@@ -102,7 +102,7 @@ title: android/mealprep-server
 
 - termux killed by hyperos: diagnose, recover over adb
 
-  - ```sh
+    ```sh
     # ssh refused but phone pings = termux app process died
     adb shell dumpsys activity exit-info com.termux | grep -E 'reason=|description='   # LOW_MEMORY / OneKeyClean
     adb shell am start -n com.termux/.HomeActivity     # relaunch, profile.d starts runsvdir + services
@@ -114,7 +114,7 @@ title: android/mealprep-server
 
 - tailscale on termux without root: built from upstream, works, dropped (client needs the app forever)
 
-  - ```sh
+    ```sh
     # official static binary dies: netmon.New: route ip+net: netlinkrib: permission denied (android blocks netlink for app uids)
     # fix lives in termux's go stdlib patch (net.Interfaces falls back on EPERM), so build with termux go:
     pkg install golang; git clone --depth 1 --branch v1.102.4 https://github.com/tailscale/tailscale ~/tailscale-src
@@ -127,7 +127,7 @@ title: android/mealprep-server
 
 - vlm findings for fridge photos (gemma 4 e4b)
 
-  - ```txt
+    ```txt
     recall on cluttered shelves ~50 %, names generic. german prompt, no example products (they get parroted), ask for {hinweis, items}
     2x2 tiles: +2 real labels, +3 invented per photo, 4x time -> rejected
     qwen3-vl-2b: parrots examples, loops one word at temp 0 -> rejected. never run two models at once on 8 gb

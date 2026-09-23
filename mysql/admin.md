@@ -111,7 +111,7 @@ title: mysql/admin
 
       - use mysql console to source dump
 
-        - ```sh
+          ```sh
           screen -S db-slave1-restore
           mysql --defaults-file=/backup/temp/db-slave1.example.internal
           ```

@@ -52,3 +52,10 @@ title: kubernetes/kubectl
   ```
 
 -
+
+- kubeconfig missing on a fresh master
+
+  ```sh
+  cp /etc/kubernetes/admin.conf /root/.kube/config
+  kubectl get pods -A
+  ```

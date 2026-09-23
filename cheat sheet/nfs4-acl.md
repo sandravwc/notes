@@ -4,13 +4,13 @@ title: cheat sheet/nfs4-acl
 
 - set nfsv4 acls
 
-  - ```sh
+    ```sh
     nfs4_setfacl -s "A::EVERYONE@:rxtncy,A:fdi:OWNER@:rwaDdxtTnNcCoy,A:fdi:EVERYONE@:rwaDdxtTnNcy,A::OWNER@:rwaDxtTnNcCoy,A:g:GROUP@:rxtncy" /export/assets
     ```
 
 - compare acls between two nfs backends (migration)
 
-  - ```sh
+    ```sh
     for e in storage-a storage-b; do for d in a11y assets harbor jobs k8s logfiles mail sftp vhosts; do for a in {1..3}; do
       mkdir -p /"${e}"/"${d}"/acl-test/test0"${a}"; touch /"${e}"/"${d}"/acl-test/test0"${a}"/test-file
     done; done; done

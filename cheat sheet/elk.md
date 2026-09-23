@@ -71,3 +71,10 @@ title: cheat sheet/elk
     "primary": true
   }' | jq
   ```
+
+- retry failed shard allocation, and ask why it failed
+
+  ```sh
+  curl -XPOST 10.0.2.131:9200/_cluster/reroute?retry_failed=true
+  curl -XPOST 10.0.2.131:9200/_cluster/allocation/explain
+  ```

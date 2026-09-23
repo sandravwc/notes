@@ -23,6 +23,6 @@ title: cheat sheet/awk
 
 - gsub octal single quote on `^copied` lines, print last column
 
-- ```sh
+  ```sh
   awk -F "/" '/^copied/ { gsub(/\047/, ""); print $NF }' a
   ```

@@ -1,11 +1,11 @@
 ---
-title: cheat sheet/mysql-major-upgrade
+title: mysql/major-upgrade
 ---
 
 - percona mysql upgrade via pcs (5.7 -> 8.0 -> 8.4lts)
   - pre upgrade
 
-    - ```sh
+      ```sh
       zfs snapshot -r zmysql/main@before_mysqld_upgrade$(date +%s)   # master
       pcs resource update r_mysqlserver op start timeout=1200s
       varnishadm backend.set_health 'web0[12345]-vm' sick
@@ -14,7 +14,7 @@ title: cheat sheet/mysql-major-upgrade
 
   - upgrade to 80
 
-    - ```sh
+      ```sh
       # replica
       stop slave;
       # master
@@ -30,7 +30,7 @@ title: cheat sheet/mysql-major-upgrade
 
   - upgrade to 84lts
 
-    - ```sh
+      ```sh
       percona-release setup ps84lts
       dnf update percona-server-server percona-server-client --assumeyes
       # add mysql_native_password to /etc/my.cnf if still needed
@@ -38,7 +38,7 @@ title: cheat sheet/mysql-major-upgrade
 
   - post upgrade
 
-    - ```sh
+      ```sh
       show binary log status\G   -- note position in case replication breaks
       pcs resource update r_mysqlserver additional_parameters="--bind-address=0.0.0.0"
       start replica; show replica status;
@@ -46,3 +46,9 @@ title: cheat sheet/mysql-major-upgrade
       zfs destroy zmysql/main@before_mysqld_upgrade...
       pcs resource update r_mysqlserver op start timeout=60s
       ```
+
+- percona repo
+
+  ```sh
+  https://repo.percona.com/yum/percona-release-latest.noarch.rpm
+  ```

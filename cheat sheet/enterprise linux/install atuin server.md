@@ -6,7 +6,7 @@ title: cheat sheet/enterprise linux/install atuin server
   - <https://docs.atuin.sh/self-hosting/server-setup>
 - copy pasta
 
-  - ```sh
+    ```sh
     #!/usr/bin/env bash
     dnf install sqlite -y
     mkdir -p /etc/atuin

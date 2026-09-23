@@ -4,7 +4,7 @@ title: android/no-root-mount-limits
 
 - no fuse/nfs/cifs mount without root, confirmed
 
-  - ```sh
+    ```sh
     ls -la /dev/fuse                          # crw------- root root, denied even to adb shell (uid 2000)
     mount -t nfs ...                          # inside proot: exit 0 but silent no-op, proot fakes mount success it can't implement
     unshare --user --map-root-user id         # "Invalid argument" -- unprivileged userns creation locked down

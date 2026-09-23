@@ -29,3 +29,12 @@ title: android/shoko-termux
   # sv restart: shoko drains jobs 30s+, sv says "timeout" at 7s, it does stop. sv kill when in a hurry
   # log "Unable to load shared library 'librhash'" -> C# fallback hashing, slow + hot. pkg install rhash-glibc; ln -s $PREFIX/glibc/lib/librhash.so ~/shoko/app/
   ```
+
+- a network timeout that is actually a ban
+
+  ```txt
+  before blaming the build, proot or the network stack: send a raw credential-free
+  ping to the api first. some apis answer a bare ping with an explicit ban notice
+  while silently dropping authenticated requests, which looks like a plain timeout.
+  stop retrying once suspected, it extends the ban.
+  ```

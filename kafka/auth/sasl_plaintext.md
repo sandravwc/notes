@@ -145,14 +145,14 @@ title: kafka/auth/sasl_plaintext
   - changing the configs
     - starting kafka server and zookeeper
 
-      - ```sh
+        ```sh
         systemctl start kafka
         systemctl start zookeeper
         ```
 
     - once kafka and zookeeper run on all nodes, check if zookeeper works correctly
 
-      - ```sh
+        ```sh
         echo stat | nc localhost 2181
         Zookeeper version: 3.7.2-c06c7c8a3e95779d4becb1938b378596e3b420d0, built on 2023-10-06 09:51 UTC
         Clients:
