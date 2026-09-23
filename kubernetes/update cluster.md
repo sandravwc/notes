@@ -2,7 +2,7 @@
 title: kubernetes/update cluster
 ---
 
-## - you need to update from version to version since kubernetes doesnt support skipping major versions
+- ## you need to update from version to version since kubernetes doesnt support skipping major versions
 
 - there is a separate page with important information from Kubernetes for each major version
   - <https://v1-31.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade>
