@@ -2,13 +2,13 @@
 title: kafka/auth/sasl_plaintext
 ---
 
-- ### All components involved in the setup must be adapted for authentication:
+- All components involved in the setup must be adapted for authentication:
   - Zookeeper
   - Kafka
   - Kafka Connect
   - Schema Registry (Confluent)
   - akhq
-- ### Before adjusting the configs, the configurations of the services must be adjusted:
+- Before adjusting the configs, the configurations of the services must be adjusted:
   - systemctl edit zookeeper.service
 
     ```service
@@ -24,7 +24,7 @@ title: kafka/auth/sasl_plaintext
     ```
 
   - For Zookeeper and Kafka, the jaas.conf files must be in the right place for the services to start.
-- ### The following configuration files must be changed:
+- The following configuration files must be changed:
   - /opt/kafka/config/server.properties
 
     ```properties
@@ -140,7 +140,7 @@ title: kafka/auth/sasl_plaintext
           sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="admin" password="changeme";
     ```
 
-- ### order of operation
+- order of operation
   - configuruing kafka services
   - changing the configs
     - starting kafka server and zookeeper
