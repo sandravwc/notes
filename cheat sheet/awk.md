@@ -32,13 +32,13 @@ title: cheat sheet/awk
   }'
   ```
 
-- gsub with some dots using regex to search and replace
+- gsub escaped dots, print last column
 
   ```sh
   awk '/Enabling and starting/ {gsub(/\.timer\.\.\./,""); print $NF}' b
   ```
 
-- gsub on line where `^copied` matches, removes single quote, prints last line
+- gsub octal single quote on `^copied` lines, print last column
 
 - ```sh
   awk -F "/" '/^copied/ { gsub(/\047/, ""); print $NF }' a
