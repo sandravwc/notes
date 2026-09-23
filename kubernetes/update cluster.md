@@ -178,278 +178,74 @@ title: kubernetes/update cluster
     reboot
     ```
 
-  - Backup Script
-    full_backup_k8s.sh
+- uncordon after reboot done
 
-       ```sh
-       #!/usr/bin/bash
-       
-       # --- 1. Setup Environment and Directory ---
-       
-       BACKUP_DIR="/root/backup_k8s_02_12_2025"
-       HOSTNAME=$(hostname -f)
-       DATE_TIME=$(date +%Y%m%d-%H%M%S)
-       SNAP_NAME="etcd-pre-upgrade-${DATE_TIME}.db"
-       LOCAL_PATH="${BACKUP_DIR}/${SNAP_NAME}"
-       
-       echo "Starting Kubernetes pre-upgrade backup..."
-       
-       # Create the main backup directory
-       mkdir -p "$BACKUP_DIR"
-       if [ $? -ne 0 ]; then
-           echo "❌ ERROR: Failed to create backup directory: ${BACKUP_DIR}"
-           exit 1
-       fi
-       echo "✅ Directory created: ${BACKUP_DIR}"
-       
-       # --- 2. Find etcd Pod ---
-       
-       ETCD_POD=$(kubectl -n kube-system get pod -l component=etcd \
-                 -o jsonpath="{.items[?(@.metadata.name==\"etcd-${HOSTNAME}\")].metadata.name}" 2>/dev/null)
-       
-       if [ -z "$ETCD_POD" ]; then
-           echo "❌ ERROR: Failed to find etcd pod for this host: etcd-${HOSTNAME}"
-           exit 1
-       fi
-       
-       echo "etcd pod for this host is: ${ETCD_POD}"
-       echo "Local path for etcd snapshot: ${LOCAL_PATH}"
-       
-       # --- 3. Save etcd Snapshot ---
-       
-       # Perform the etcd snapshot and pipe the binary output directly to the local file
-       echo "Saving etcd snapshot..."
-       kubectl -n kube-system exec -i "$ETCD_POD" -- \
-         /bin/sh -c \
-         'ETCDCTL_API=3 etcdctl \
-           --endpoints=https://127.0.0.1:2379 \
-           --cacert=/etc/kubernetes/pki/etcd/ca.crt \
-           --cert=/etc/kubernetes/pki/etcd/server.crt \
-           --key=/etc/kubernetes/pki/etcd/server.key \
-           snapshot save -' > "$LOCAL_PATH"
-       
-       if [ $? -ne 0 ]; then
-           echo "❌ ERROR: Failed to save etcd snapshot."
-           rm -f "$LOCAL_PATH" # Clean up potentially corrupted file
-           exit 1
-       fi
-       
-       # Check if the snapshot file is non-empty
-       if [ ! -s "$LOCAL_PATH" ]; then
-           echo "❌ ERROR: etcd snapshot file is empty or missing after save."
-           exit 1
-       fi
-       echo "✅ etcd snapshot saved to ${LOCAL_PATH}"
-       
-       # --- 4. Copy Critical Configuration Files ---
-       
-       echo "Copying critical configuration files and directories..."
-       
-       # Create a subdirectory for the associated config files (optional but good practice)
-       CONFIG_DIR="${BACKUP_DIR}/config_files-${DATE_TIME}"
-       mkdir -p "$CONFIG_DIR"
-       if [ $? -ne 0 ]; then
-           echo "❌ ERROR: Failed to create config directory: ${CONFIG_DIR}"
-           exit 1
-       fi
-       
-       # Copy the entire PKI directory
-       sudo cp -R /etc/kubernetes/pki "$CONFIG_DIR/pki"
-       if [ $? -ne 0 ]; then
-           echo "❌ ERROR: Failed to copy PKI directory."
-           exit 1
-       fi
-       echo "✅ PKI directory copied."
-       
-       # Copy all static pod manifests
-       sudo cp -R /etc/kubernetes/manifests "$CONFIG_DIR/manifests"
-       if [ $? -ne 0 ]; then
-           echo "❌ ERROR: Failed to copy manifests directory."
-           exit 1
-       fi
-       echo "✅ Manifests directory copied."
-       
-       # Copy the admin configuration file
-       sudo cp /etc/kubernetes/admin.conf "$CONFIG_DIR/admin.conf"
-       if [ $? -ne 0 ]; then
-           echo "❌ ERROR: Failed to copy admin.conf."
-           exit 1
-       fi
-       echo "✅ admin.conf copied."
-       
-       # Copy the current kubeadm configuration file
-       sudo cp /etc/kubernetes/kubeadm-config.yaml "$CONFIG_DIR/kubeadm-config.yaml"
-       if [ $? -ne 0 ]; then
-           echo "❌ ERROR: Failed to copy kubeadm-config.yaml."
-           exit 1
-       fi
-       echo "✅ kubeadm-config.yaml copied."
-       
-       # --- 5. Export All Kubernetes Resources ---
-       
-       RESOURCES_FILE="${CONFIG_DIR}/all-resources-pre-upgrade.yaml"
-       echo "Exporting all Kubernetes resources to ${RESOURCES_FILE}..."
-       
-       # Export key cluster resources (all, configmaps, secrets, pv, pvc, etc.)
-       kubectl get all,configmaps,secrets,pv,pvc,storageclass,networkpolicy,crds -A -o yaml > "$RESOURCES_FILE"
-       if [ $? -ne 0 ]; then
-           echo "❌ ERROR: Failed to export Kubernetes resources."
-           exit 1
-       fi
-       
-       if [ ! -s "$RESOURCES_FILE" ]; then
-           echo "⚠️ WARNING: Kubernetes resources export file is empty. Check kubectl access."
-       else
-           echo "✅ All Kubernetes resources exported."
-       fi
-       
-       echo "---"
-       echo "🎉 **Backup Complete!** 🎉"
-       echo "Backup location: ${BACKUP_DIR}"
-       echo "etcd snapshot: ${LOCAL_PATH}"
-       echo "Configuration files: ${CONFIG_DIR}"
-    ```
+  ```bash
+  kubectl uncordon NODE
+  ```
 
-  - Upgrade Script
-    upgrade_k8s.sh
+***
 
-    ```sh
-       #!/usr/bin/env bash
-       
-       # --- User Configuration ---
-       # IMPORTANT: Set your desired target version here.
-       # Use the full version, e.g., 1.33.9
-       TARGET_K8S_VERSION="1.33.5"
-       
-       # Extract the major.minor part (e.g., 1.33 from 1.33.9)
-       K8S_MAJOR_MINOR=$(echo "$TARGET_K8S_VERSION" | awk -F'.' '{print $1"."$2}')
-       
-       # --- 1. Initial Checks (jq and Root) ---
-       
-       # Check for root permissions
-       if [[ $EUID -ne 0 ]]; then
-          echo "❌ ERROR: This script must be run as root or with sudo."
-          exit 1
-       fi
-       
-       # Check if 'jq' is installed
-       echo "Checking for 'jq' installation..."
-       if ! dnf list installed jq &> /dev/null; then
-           echo "❌ ERROR: 'jq' is not installed. Please install it with 'dnf install -y jq'."
-           exit 2
-       fi
-       echo "✅ 'jq' is installed."
-       
-       # --- 2. Configure Kubernetes Repository ---
-       
-       K8S_REPO_FILE="/etc/yum.repos.d/kubernetes.repo"
-       echo "Creating Kubernetes repo file: ${K8S_REPO_FILE}"
-       
-       # Note: Kubernetes repos use the Major.Minor version (v1.33)
-       cat <<EOF | tee "$K8S_REPO_FILE"
-       [kubernetes]
-       name=Kubernetes
-       baseurl=https://pkgs.k8s.io/core:/stable:/v${K8S_MAJOR_MINOR}/rpm/
-       enabled=1
-       gpgcheck=1
-       gpgkey=https://pkgs.k8s.io/core:/stable:/v${K8S_MAJOR_MINOR}/rpm/repodata/repomd.xml.key
-       exclude=kubelet kubeadm kubectl cri-tools kubernetes-cni
-       EOF
-       
-       if [ $? -ne 0 ]; then
-           echo "❌ ERROR: Failed to create/write ${K8S_REPO_FILE}."
-           exit 1
-       fi
-       echo "✅ Kubernetes repo configured for v${K8S_MAJOR_MINOR}."
-       
-       # --- 3. Configure CRI-O Repository ---
-       
-       CRIO_REPO_FILE="/etc/yum.repos.d/cri-o.repo"
-       echo "Creating CRI-O repo file: ${CRIO_REPO_FILE}"
-       
-       # Note: CRI-O repos also use the Major.Minor version (v1.33)
-       cat <<EOF | tee "$CRIO_REPO_FILE"
-       [cri-o]
-       name=CRI-O
-       baseurl=https://download.opensuse.org/repositories/isv:/cri-o:/stable:/v${K8S_MAJOR_MINOR}/rpm/
-       enabled=1
-       gpgcheck=1
-       gpgkey=https://download.opensuse.org/repositories/isv:/cri-o:/stable:/v${K8S_MAJOR_MINOR}/rpm/repodata/repomd.xml.key
-       exclude=cri-o
-       EOF
-       
-       if [ $? -ne 0 ]; then
-           echo "❌ ERROR: Failed to create/write ${CRIO_REPO_FILE}."
-           exit 1
-       fi
-       echo "✅ CRI-O repo configured for v${K8S_MAJOR_MINOR}."
-       
-       # --- 4. Install/Update Components ---
-       
-       echo "Updating/Installing Kubernetes components to version ${TARGET_K8S_VERSION}..."
-       
-       # Install the specific version. The 'disableexcludes' is crucial.
-       dnf install --assumeyes --disableexcludes=kubernetes,cri-o \
-           kubeadm-"$TARGET_K8S_VERSION" \
-           kubectl-"$TARGET_K8S_VERSION" \
-           kubelet-"$TARGET_K8S_VERSION" \
-           cri-o
-       
-       if [ $? -ne 0 ]; then
-           echo "❌ ERROR: Failed to update one or more Kubernetes components."
-           exit 1
-       fi
-       echo "✅ Components updated to version ${TARGET_K8S_VERSION}."
-       
-       # --- 5. Run Post-Installation Upgrade Commands (Based on Argument) ---
-       
-       # Check if an argument was provided (master or node)
-       if [[ -z "$1" ]]; then
-           echo "⚠️ WARNING: No argument provided (e.g., 'master' or 'node'). Skipping kubeadm upgrade steps."
-       elif [[ "$1" == "master" ]]; then
-           echo "--- MASTER UPGRADE STEPS ---"
-           echo "Running checks for kubeadm upgrade plan v${TARGET_K8S_VERSION}"
-           
-           kubeadm upgrade plan "v${TARGET_K8S_VERSION}"
-           if [ $? -ne 0 ]; then
-               echo "❌ ERROR: 'kubeadm upgrade plan' failed. Review output before proceeding."
-               exit 1
-           fi
-           
-           echo "---"
-           echo "👉 **NEXT STEP:** RUN THE UPGRADE COMMAND AS PRESCRIBED IN THE PLAN OUTPUT:"
-           echo "   E.g., run 'kubeadm upgrade apply v${TARGET_K8S_VERSION}'"
-           echo "👉 **FINALLY:** After 'kubeadm upgrade apply' succeeds, remember to restart the kubelet:"
-           echo "   run 'systemctl daemon-reload'"
-           echo "   run 'systemctl restart kubelet'"
-       
-       elif [[ "$1" == "node" ]]; then
-           echo "--- NODE UPGRADE STEPS ---"
-           
-           kubeadm upgrade node
-           if [ $? -ne 0 ]; then
-               echo "❌ ERROR: 'kubeadm upgrade node' failed. Review output before proceeding."
-               exit 1
-           fi
-           
-           echo "Reloading daemon and restarting kubelet..."
-           systemctl daemon-reload
-           if [ $? -ne 0 ]; then
-               echo "❌ ERROR: 'systemctl daemon-reload' failed."
-               exit 1
-           fi
-           
-           systemctl restart kubelet
-           if [ $? -ne 0 ]; then
-               echo "❌ ERROR: 'systemctl restart kubelet' failed."
-               exit 1
-           fi
-           echo "✅ Node upgrade complete. Kubelet restarted."
-       
-       else
-           echo "⚠️ WARNING: Unrecognized argument '$1'. Expected 'master' or 'node'."
-       fi
-       
-       echo "---"
-       echo "🎉 **Script Finished!**"
-    ```
+- can be done programmaticaly with a simple script
+
+  ```bash
+  #!/usr/bin/env bash
+  nodeType="${1}"
+
+  if ! dnf list installed jq &> /dev/null
+  then
+    exit 2
+  fi
+
+  if [[ ! ${nodeType} =~ ^(master|worker)$ ]]
+  then
+    printf "%s\n%s\n" "you need to provide nodeType ${0} master|worker" "depending on nodeType, kubeadm upgrade steps will differ"
+    exit 2
+  fi
+
+  kubernetesStableRelease=$(curl -s https://endoflife.date/api/kubernetes.json | jq -r '.[0].cycle')
+  kubernetesLatestRelease=$(curl -s https://endoflife.date/api/kubernetes.json | jq -r '.[0].latest')
+
+  cat <<EOF | tee /etc/yum.repos.d/kubernetes.repo
+  [kubernetes]
+  name=Kubernetes
+  baseurl=https://pkgs.k8s.io/core:/stable:/v${kubernetesStableRelease}/rpm/
+  enabled=1
+  gpgcheck=1
+  gpgkey=https://pkgs.k8s.io/core:/stable:/v${kubernetesStableRelease}/rpm/repodata/repomd.xml.key
+  exclude=kubelet kubeadm kubectl cri-tools kubernetes-cni
+  EOF
+
+
+
+  cat <<EOF | tee /etc/yum.repos.d/cri-o.repo
+  [cri-o]
+  name=CRI-O
+  baseurl=https://download.opensuse.org/repositories/isv:/cri-o:/stable:/v${kubernetesStableRelease}/rpm/
+  enabled=1
+  gpgcheck=1
+  gpgkey=https://download.opensuse.org/repositories/isv:/cri-o:/stable:/v${kubernetesStableRelease}/rpm/repodata/repomd.xml.key
+  exclude=cri-o
+  EOF
+
+  dnf update --assumeyes --disableexcludes=kubernetes,cri-o \
+    kubeadm \
+    kubectl \
+    kubelet \
+    cri-o
+
+  if [[ ${nodeType} == master ]]
+  then
+    echo "running checks for kubeadm upgrade apply v${kubernetesLatestRelease}"
+    kubeadm upgrade plan
+    echo "RUN UPDATE AS PRESCRIBED"
+    echo "restart kubelet afterwards!!"
+    echo "run systemctl daemon-reload"
+    echo "run systemctl restart kubelet"
+  elif [[ "${nodeType}" == worker ]]
+  then
+    kubeadm upgrade node
+    systemctl daemon-reload
+    systemctl restart kubelet
+  fi
+  ```
