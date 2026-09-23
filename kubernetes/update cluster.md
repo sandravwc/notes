@@ -186,7 +186,7 @@ title: kubernetes/update cluster
 
 ***
 
-- can be done programmaticaly with a simple script
+- ## can be done programmaticaly with a simple script
 
   ```bash
   #!/usr/bin/env bash
@@ -197,7 +197,7 @@ title: kubernetes/update cluster
     exit 2
   fi
 
-  if [[ ! ${nodeType} =~ ^(master|worker)$ ]]
+  if [[ ! "${nodeType}" =~ ^(master|worker)$ ]]
   then
     printf "%s\n%s\n" "you need to provide nodeType ${0} master|worker" "depending on nodeType, kubeadm upgrade steps will differ"
     exit 2
@@ -234,7 +234,7 @@ title: kubernetes/update cluster
     kubelet \
     cri-o
 
-  if [[ ${nodeType} == master ]]
+  if [[ "${nodeType}" == master ]]
   then
     echo "running checks for kubeadm upgrade apply v${kubernetesLatestRelease}"
     kubeadm upgrade plan
