@@ -10,7 +10,7 @@ title: android/termux-setup
     cd ~/workdir/ble.sh && make install INSDIR="$HOME/.local/lib/blesh"
     ```
 
-    full script + .bashrc/.blerc/init.vim/.screenrc: [comfy_script.sh](https://github.com/sandravwc/termux-setup/blob/master/comfy_script.sh)
+    full script + .bashrc/.blerc/init.vim/.screenrc: [termux/comfy_script.sh](https://github.com/sandravwc/comfy-env/blob/master/termux/comfy_script.sh)
     no atuin -- no arm/termux build exists, stripped from the script
 - bionic locale + $USER (separate, applied after the base script)
 
@@ -35,7 +35,7 @@ title: android/termux-setup
     # sv needs $SVDIR set (sourced via .bashrc) -- non-interactive ssh exec needs it passed explicitly
     ```
 
-    mesh config: [ssh_config](https://github.com/sandravwc/termux-setup/blob/master/ssh_config)
+    mesh config: [ssh_config](https://github.com/sandravwc/comfy-env/blob/master/termux/ssh_config)
 - termux:boot -- wake lock
 
   - ```sh
@@ -43,7 +43,7 @@ title: android/termux-setup
     mkdir -p ~/.termux/boot
     ```
 
-    script: [termux-boot-wake-lock.sh](https://github.com/sandravwc/termux-setup/blob/master/termux-boot-wake-lock.sh) -- needs both Termux:Boot + Termux:API apps installed (same build source as Termux itself)
+    script: [termux-boot-wake-lock.sh](https://github.com/sandravwc/comfy-env/blob/master/termux/termux-boot-wake-lock.sh) -- needs both Termux:Boot + Termux:API apps installed (same build source as Termux itself)
 - google play termux is dead, don't mix sources
 
   - ```txt

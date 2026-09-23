@@ -33,6 +33,8 @@ title: cheat sheet/enterprise linux
   export LC_ALL=en_US.UTF-8
   export HISTTIMEFORMAT="%F %T "
   export HISTSIZE="100000"
+  shopt -s histappend
+  PROMPT_COMMAND='history -a'
   export LS_OPTIONS='--color=auto'
   # and then aliases and such
   if [[ -f ~/.bashrc ]]; then
@@ -87,7 +89,6 @@ title: cheat sheet/enterprise linux
   bleopt complete_ambiguous=
   bleopt prompt_eol_mark=''
   bleopt complete_menu_filter=
-  bleopt history_share=1
   # bash-completion pre-escapes rsync/scp local paths (scp style), ble.sh would quote them a second time
   function my/scp-dequote-compreply {
     case ${COMP_WORDS[0]} in (rsync|scp) ;; (*) return 0 ;; esac
