@@ -14,6 +14,7 @@ title: cheat sheet
 - [[cheat sheet/ci-cd]]
 - [[cheat sheet/vim]]
 - [[cheat sheet/bash]]
+- [[cheat sheet/ble.sh]]
 - [[cheat sheet/screen]]
 - [[cheat sheet/proceed]]
 - [[cheat sheet/mail]]
